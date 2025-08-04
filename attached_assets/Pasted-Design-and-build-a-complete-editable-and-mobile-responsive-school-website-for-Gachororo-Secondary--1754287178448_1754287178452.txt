@@ -1,0 +1,110 @@
+Design and build a complete, editable, and mobile-responsive school website for Gachororo Secondary School, allowing the principal (or admin) to manage school content and upload e-learning resources for students in Forms 1–4. The system must include a secure login/register feature for admin, a content management dashboard, a file uploader for papers and videos, and public-facing pages for the school.
+
+🛠️ TECH STACK:
+Layer	Tools
+Frontend	HTML5, Tailwind CSS or Bootstrap, JavaScript
+Backend	Python (Flask framework)
+Auth	Flask-Login
+Database	SQLite3
+File Uploads	Local /uploads folder
+Template Engine	Jinja2
+Hosting	Replit, Render, or shared host (for deployment)
+
+🧩 SYSTEM MODULES & FEATURES
+1. 🔐 Authentication System
+Login, Register, Logout
+
+Email and password-based authentication
+
+Default login for testing:
+
+Email: paulmunywoki086@gmail.com
+
+Password: Antananarivo
+
+Only admin can access the dashboard
+
+Admin can change login credentials or transfer admin rights
+
+2. 🏠 Public Website Pages
+Page	Details
+Home	Welcome from principal, school mission/vision, slideshow
+About	History, founding, departments, motto, values
+Gallery	School photos uploaded by admin
+News & Events	School announcements, exam dates, term events
+Achievements	KCSE results, trophies, alumni success
+E-learning	Past papers and video classes categorized by Form & Subject
+Contact	Map, address, phone, WhatsApp button, contact form
+
+3. 🧑‍💼 Admin Dashboard Features
+Accessible after login at /dashboard.
+
+Feature	Description
+📝 Edit Home Page	Change principal message, vision, mission, motto
+🖼️ Gallery Manager	Upload or delete school images
+📢 News/Event Manager	Post, edit, or delete announcements/events
+👨‍🏫 Staff Profiles	Add/edit/remove teachers and staff bios/photos
+📂 E-learning Uploads	Upload Form 1–4 papers (PDF/Word) & video lessons
+🛠️ Admin Settings	Change admin email, password, transfer access
+📎 File Manager	Manage uploaded files (delete or replace old uploads)
+
+4. 📚 E-learning System (for Forms 1 to 4)
+Admin can upload:
+
+✅ Past papers (PDF, Word)
+
+✅ Video classes (YouTube link or MP4 file)
+
+Organized by:
+
+Form (1–4)
+
+Subject (Math, Bio, Kiswahili, etc.)
+
+Public students can view/download materials from /elearning
+
+📁 PROJECT STRUCTURE
+bash
+Copy
+Edit
+gachororo_school/
+│
+├── app.py
+├── config.py
+├── models.py
+├── requirements.txt
+│
+├── /templates/
+│   ├── base.html
+│   ├── index.html
+│   ├── login.html
+│   ├── dashboard.html
+│   ├── elearning.html
+│   ├── news.html
+│   ├── contact.html
+│   └── ...
+│
+├── /static/
+│   ├── /css/
+│   ├── /js/
+│   └── /images/
+│
+├── /uploads/
+│   ├── /papers/
+│   ├── /videos/
+│   └── /gallery/
+│
+├── /db/
+│   └── database.sqlite3
+🎨 DESIGN & VISUAL
+Aspect	Details
+Colors	Based on Gachororo Secondary branding (confirm colors)
+Typography	Clean, modern fonts (e.g., Inter, Open Sans)
+Theme	Responsive layout, minimal UI, light mode default
+Logo	Use provided or placeholder logo (to be replaced by admin)
+Responsiveness	Mobile, tablet, and desktop friendly
+
+🚀 FUTURE ADD-ONS (Optional but possible later)
+🌐 Language toggle: English ↔ Swahili
+
+🌗 Theme switcher: Red / Blue / Light / Gray
