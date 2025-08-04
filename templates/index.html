@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Gachororo Secondary School{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section bg-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">Welcome to Gachororo Secondary School</h1>
+                {% if content and content.principal_message %}
+                    <p class="lead mb-4">{{ content.principal_message }}</p>
+                {% else %}
+                    <p class="lead mb-4">Nurturing minds, building character, and shaping tomorrow's leaders through quality education and holistic development.</p>
+                {% endif %}
+                <div class="d-flex gap-3">
+                    <a href="{{ url_for('about') }}" class="btn btn-light btn-lg">Learn More</a>
+                    <a href="{{ url_for('elearning') }}" class="btn btn-outline-light btn-lg">E-Learning</a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="hero-image">
+                    <i class="fas fa-school display-1"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- School Values Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4 mb-4">
+                <div class="value-card h-100">
+                    <div class="value-icon mb-3">
+                        <i class="fas fa-lightbulb fa-3x text-primary"></i>
+                    </div>
+                    <h4>{% if content and content.mission %}Mission{% else %}Excellence{% endif %}</h4>
+                    <p class="text-muted">
+                        {% if content and content.mission %}
+                            {{ content.mission }}
+                        {% else %}
+                            Committed to providing quality education that empowers students to reach their full potential.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="value-card h-100">
+                    <div class="value-icon mb-3">
+                        <i class="fas fa-eye fa-3x text-success"></i>
+                    </div>
+                    <h4>{% if content and content.vision %}Vision{% else %}Innovation{% endif %}</h4>
+                    <p class="text-muted">
+                        {% if content and content.vision %}
+                            {{ content.vision }}
+                        {% else %}
+                            Embracing modern teaching methods and technology to enhance the learning experience.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="value-card h-100">
+                    <div class="value-icon mb-3">
+                        <i class="fas fa-heart fa-3x text-danger"></i>
+                    </div>
+                    <h4>{% if content and content.motto %}{{ content.motto }}{% else %}Character{% endif %}</h4>
+                    <p class="text-muted">
+                        {% if content and content.motto %}
+                            Living by our motto in everything we do.
+                        {% else %}
+                            Building strong moral values and integrity in all our students.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Recent News & Events -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h3 class="mb-4">
+                    <i class="fas fa-newspaper text-primary me-2"></i>
+                    Recent News
+                </h3>
+                {% if recent_news %}
+                    {% for news in recent_news %}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h6 class="card-title">{{ news.title }}</h6>
+                                <p class="card-text text-muted small">
+                                    {{ news.content[:100] }}{% if news.content|length > 100 %}...{% endif %}
+                                </p>
+                                <small class="text-muted">{{ news.date_created.strftime('%B %d, %Y') }}</small>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center text-muted py-4">
+                        <i class="fas fa-newspaper fa-3x mb-3"></i>
+                        <p>No recent news available.</p>
+                    </div>
+                {% endif %}
+                <div class="text-center">
+                    <a href="{{ url_for('news') }}" class="btn btn-primary">View All News</a>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <h3 class="mb-4">
+                    <i class="fas fa-calendar text-success me-2"></i>
+                    Upcoming Events
+                </h3>
+                {% if upcoming_events %}
+                    {% for event in upcoming_events %}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h6 class="card-title">{{ event.title }}</h6>
+                                <p class="card-text text-muted small">
+                                    {{ event.content[:100] }}{% if event.content|length > 100 %}...{% endif %}
+                                </p>
+                                <small class="text-muted">{{ event.date_created.strftime('%B %d, %Y') }}</small>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center text-muted py-4">
+                        <i class="fas fa-calendar fa-3x mb-3"></i>
+                        <p>No upcoming events scheduled.</p>
+                    </div>
+                {% endif %}
+                <div class="text-center">
+                    <a href="{{ url_for('news') }}" class="btn btn-success">View All Events</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Gallery Preview -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="text-center mb-5">
+                    <i class="fas fa-images text-warning me-2"></i>
+                    School Gallery
+                </h3>
+            </div>
+        </div>
+        
+        {% if gallery_images %}
+            <div class="row">
+                {% for image in gallery_images %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card gallery-card">
+                            <img src="{{ url_for('gallery_file', filename=image.filename) }}" 
+                                 class="card-img-top gallery-img" 
+                                 alt="{{ image.title or 'School Image' }}">
+                            {% if image.title %}
+                                <div class="card-body">
+                                    <h6 class="card-title">{{ image.title }}</h6>
+                                    {% if image.description %}
+                                        <p class="card-text text-muted small">{{ image.description }}</p>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center text-muted py-5">
+                <i class="fas fa-images fa-4x mb-3"></i>
+                <p>No gallery images available yet.</p>
+            </div>
+        {% endif %}
+        
+        <div class="text-center mt-4">
+            <a href="{{ url_for('gallery') }}" class="btn btn-warning">View Full Gallery</a>
+        </div>
+    </div>
+</section>
+
+<!-- Quick Access -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-12 mb-4">
+                <h3>Quick Access</h3>
+                <p class="lead">Access important resources and information</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <a href="{{ url_for('elearning') }}" class="btn btn-light btn-lg w-100">
+                    <i class="fas fa-book-open d-block mb-2"></i>
+                    E-Learning
+                </a>
+            </div>
+            <div class="col-md-3 mb-3">
+                <a href="{{ url_for('news') }}" class="btn btn-light btn-lg w-100">
+                    <i class="fas fa-newspaper d-block mb-2"></i>
+                    News & Events
+                </a>
+            </div>
+            <div class="col-md-3 mb-3">
+                <a href="{{ url_for('achievements') }}" class="btn btn-light btn-lg w-100">
+                    <i class="fas fa-trophy d-block mb-2"></i>
+                    Achievements
+                </a>
+            </div>
+            <div class="col-md-3 mb-3">
+                <a href="{{ url_for('contact') }}" class="btn btn-light btn-lg w-100">
+                    <i class="fas fa-phone d-block mb-2"></i>
+                    Contact Us
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,460 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Staff - Admin Dashboard{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="admin-header bg-primary text-white py-4">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="h3 mb-1">
+                    <i class="fas fa-users me-2"></i>
+                    Staff Management
+                </h1>
+                <p class="mb-0">Add and manage teacher and staff profiles</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <a href="{{ url_for('dashboard') }}" class="btn btn-light">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Add Staff Form -->
+<section class="py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-user-plus me-2"></i>
+                            Add New Staff Member
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="name" class="form-label fw-bold">Full Name *</label>
+                                    <input type="text" class="form-control" id="name" name="name" required
+                                           placeholder="e.g., John Doe">
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="position" class="form-label fw-bold">Position/Title *</label>
+                                    <input type="text" class="form-control" id="position" name="position" required
+                                           placeholder="e.g., Principal, Mathematics Teacher">
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="qualifications" class="form-label fw-bold">Qualifications</label>
+                                    <textarea class="form-control" id="qualifications" name="qualifications" rows="3"
+                                              placeholder="e.g., B.Ed Mathematics, M.Sc Statistics"></textarea>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="subjects" class="form-label fw-bold">Subjects Taught</label>
+                                    <input type="text" class="form-control" id="subjects" name="subjects"
+                                           placeholder="e.g., Mathematics, Physics">
+                                    <div class="form-text">Separate multiple subjects with commas</div>
+                                </div>
+                                
+                                <div class="col-12 mb-3">
+                                    <label for="photo" class="form-label fw-bold">Profile Photo</label>
+                                    <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
+                                    <div class="form-text">Optional. Supported formats: JPG, PNG, GIF (Max: 5MB)</div>
+                                </div>
+                                
+                                <div class="col-12 text-center">
+                                    <button type="submit" class="btn btn-success btn-lg px-5">
+                                        <i class="fas fa-user-plus me-2"></i>Add Staff Member
+                                    </button>
+                                    <button type="reset" class="btn btn-secondary btn-lg px-5 ms-3">
+                                        <i class="fas fa-redo me-2"></i>Reset Form
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Staff List -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mb-4">
+                <h3>
+                    <i class="fas fa-users text-primary me-2"></i>
+                    Current Staff Members
+                    {% if staff_members %}
+                        <span class="badge bg-primary">{{ staff_members|length }}</span>
+                    {% endif %}
+                </h3>
+            </div>
+        </div>
+        
+        {% if staff_members %}
+            <div class="row">
+                {% for staff in staff_members %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card staff-admin-card h-100">
+                            <div class="card-body text-center">
+                                <div class="staff-photo-container mb-3">
+                                    {% if staff.photo_filename %}
+                                        <img src="{{ url_for('gallery_file', filename=staff.photo_filename) }}" 
+                                             class="staff-admin-photo" 
+                                             alt="{{ staff.name }}">
+                                    {% else %}
+                                        <div class="staff-admin-photo-placeholder">
+                                            <i class="fas fa-user fa-3x text-muted"></i>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <h5 class="card-title mb-2">{{ staff.name }}</h5>
+                                <p class="text-primary fw-semibold mb-3">{{ staff.position }}</p>
+                                
+                                {% if staff.qualifications %}
+                                    <div class="mb-3">
+                                        <h6 class="text-muted small mb-1">Qualifications:</h6>
+                                        <p class="text-muted small">{{ staff.qualifications }}</p>
+                                    </div>
+                                {% endif %}
+                                
+                                {% if staff.subjects %}
+                                    <div class="mb-3">
+                                        <h6 class="text-muted small mb-1">Subjects:</h6>
+                                        <div class="subjects-tags">
+                                            {% for subject in staff.subjects.split(',') %}
+                                                <span class="badge bg-light text-dark me-1 mb-1">{{ subject.strip() }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                
+                                <div class="staff-actions mt-auto">
+                                    <small class="text-muted d-block mb-2">
+                                        <i class="fas fa-calendar me-1"></i>
+                                        Added {{ staff.date_added.strftime('%b %d, %Y') }}
+                                    </small>
+                                    <a href="{{ url_for('delete_staff', staff_id=staff.id) }}" 
+                                       class="btn btn-danger btn-sm"
+                                       onclick="return confirm('Are you sure you want to delete {{ staff.name }}?')">
+                                        <i class="fas fa-trash me-1"></i>Remove
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center text-muted py-5">
+                <i class="fas fa-users fa-4x mb-3"></i>
+                <h3>No Staff Members</h3>
+                <p>Add your first staff member using the form above.</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Staff Organization Chart -->
+{% if staff_members %}
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mb-4">
+                <h3 class="text-center">
+                    <i class="fas fa-sitemap text-primary me-2"></i>
+                    Staff Overview
+                </h3>
+            </div>
+        </div>
+        
+        <div class="row">
+            <!-- Categorize staff by position -->
+            {% set admin_positions = ['Principal', 'Deputy Principal', 'Head Teacher'] %}
+            {% set teaching_positions = staff_members | selectattr('position', 'match', '.*Teacher.*') | list %}
+            {% set other_staff = staff_members | rejectattr('position', 'in', admin_positions) | rejectattr('position', 'match', '.*Teacher.*') | list %}
+            
+            {% if staff_members | selectattr('position', 'in', admin_positions) | list %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white text-center">
+                            <h6 class="mb-0">Administration</h6>
+                        </div>
+                        <div class="card-body">
+                            {% for staff in staff_members %}
+                                {% if staff.position in admin_positions %}
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div class="me-2">
+                                            {% if staff.photo_filename %}
+                                                <img src="{{ url_for('gallery_file', filename=staff.photo_filename) }}" 
+                                                     class="rounded-circle" width="30" height="30" 
+                                                     style="object-fit: cover;">
+                                            {% else %}
+                                                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center" 
+                                                     style="width: 30px; height: 30px;">
+                                                    <i class="fas fa-user text-muted"></i>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div>
+                                            <div class="fw-semibold small">{{ staff.name }}</div>
+                                            <div class="text-muted small">{{ staff.position }}</div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            
+            {% if teaching_positions %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-header bg-success text-white text-center">
+                            <h6 class="mb-0">Teaching Staff</h6>
+                        </div>
+                        <div class="card-body">
+                            {% for staff in teaching_positions[:5] %}
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="me-2">
+                                        {% if staff.photo_filename %}
+                                            <img src="{{ url_for('gallery_file', filename=staff.photo_filename) }}" 
+                                                 class="rounded-circle" width="30" height="30" 
+                                                 style="object-fit: cover;">
+                                        {% else %}
+                                            <div class="bg-light rounded-circle d-flex align-items-center justify-content-center" 
+                                                 style="width: 30px; height: 30px;">
+                                                <i class="fas fa-user text-muted"></i>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div>
+                                        <div class="fw-semibold small">{{ staff.name }}</div>
+                                        <div class="text-muted small">{{ staff.subjects or 'Various subjects' }}</div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            {% if teaching_positions | length > 5 %}
+                                <div class="text-center">
+                                    <small class="text-muted">+{{ teaching_positions | length - 5 }} more teachers</small>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            
+            {% if other_staff %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-header bg-info text-white text-center">
+                            <h6 class="mb-0">Support Staff</h6>
+                        </div>
+                        <div class="card-body">
+                            {% for staff in other_staff[:5] %}
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="me-2">
+                                        {% if staff.photo_filename %}
+                                            <img src="{{ url_for('gallery_file', filename=staff.photo_filename) }}" 
+                                                 class="rounded-circle" width="30" height="30" 
+                                                 style="object-fit: cover;">
+                                        {% else %}
+                                            <div class="bg-light rounded-circle d-flex align-items-center justify-content-center" 
+                                                 style="width: 30px; height: 30px;">
+                                                <i class="fas fa-user text-muted"></i>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div>
+                                        <div class="fw-semibold small">{{ staff.name }}</div>
+                                        <div class="text-muted small">{{ staff.position }}</div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            {% if other_staff | length > 5 %}
+                                <div class="text-center">
+                                    <small class="text-muted">+{{ other_staff | length - 5 }} more staff</small>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Quick Actions -->
+<section class="py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="mb-3">Quick Actions</h5>
+                        <div class="d-flex justify-content-center gap-3 flex-wrap">
+                            <a href="{{ url_for('about') }}" target="_blank" class="btn btn-outline-primary">
+                                <i class="fas fa-eye me-2"></i>View Public Staff Page
+                            </a>
+                            <button type="button" class="btn btn-outline-success" onclick="window.scrollTo(0,0)">
+                                <i class="fas fa-user-plus me-2"></i>Add Another Staff Member
+                            </button>
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-tachometer-alt me-2"></i>Back to Dashboard
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block head %}
+<style>
+.admin-header {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+}
+
+.staff-admin-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.staff-admin-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.staff-admin-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #f8f9fa;
+}
+
+.staff-admin-photo-placeholder {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    border: 4px solid #e9ecef;
+}
+
+.subjects-tags .badge {
+    font-size: 0.7rem;
+}
+
+.staff-actions {
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.form-control:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 0 0.2rem rgba(40,167,69,0.25);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+    border: none;
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #1e7e34 0%, #155724 100%);
+    transform: translateY(-1px);
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 80px;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // File input validation
+    const photoInput = document.getElementById('photo');
+    photoInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            // Validate file size (5MB = 5 * 1024 * 1024 bytes)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File size is too large. Please select a file smaller than 5MB.');
+                this.value = '';
+                return;
+            }
+            
+            // Validate file type
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            if (!allowedTypes.includes(file.type)) {
+                alert('Please select a valid image file (JPEG, PNG, or GIF).');
+                this.value = '';
+                return;
+            }
+        }
+    });
+
+    // Auto-suggest subjects
+    const subjectsInput = document.getElementById('subjects');
+    const commonSubjects = [
+        'Mathematics', 'English', 'Kiswahili', 'Biology', 'Chemistry', 'Physics',
+        'History', 'Geography', 'CRE', 'Business Studies', 'Agriculture',
+        'Computer Studies', 'Art & Design', 'Music', 'French', 'German'
+    ];
+
+    // Add datalist for auto-suggestions
+    const datalist = document.createElement('datalist');
+    datalist.id = 'subjects-list';
+    commonSubjects.forEach(subject => {
+        const option = document.createElement('option');
+        option.value = subject;
+        datalist.appendChild(option);
+    });
+    document.body.appendChild(datalist);
+    subjectsInput.setAttribute('list', 'subjects-list');
+
+    // Position validation
+    const positionInput = document.getElementById('position');
+    const commonPositions = [
+        'Principal', 'Deputy Principal', 'Head Teacher', 'Senior Teacher',
+        'Mathematics Teacher', 'English Teacher', 'Science Teacher', 
+        'Social Studies Teacher', 'Languages Teacher', 'Arts Teacher',
+        'Physical Education Teacher', 'Computer Teacher', 'Librarian',
+        'Laboratory Technician', 'Secretary', 'Accountant', 'Security Guard'
+    ];
+
+    const positionDatalist = document.createElement('datalist');
+    positionDatalist.id = 'positions-list';
+    commonPositions.forEach(position => {
+        const option = document.createElement('option');
+        option.value = position;
+        positionDatalist.appendChild(option);
+    });
+    document.body.appendChild(positionDatalist);
+    positionInput.setAttribute('list', 'positions-list');
+});
+</script>
+{% endblock %}

@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}Gallery - Gachororo Secondary School{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header bg-primary text-white py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="display-4 fw-bold">School Gallery</h1>
+                <p class="lead">Explore moments and memories from our school community</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Gallery Section -->
+<section class="py-5">
+    <div class="container">
+        {% if images %}
+            <div class="row" id="gallery">
+                {% for image in images %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card gallery-card h-100">
+                            <img src="{{ url_for('gallery_file', filename=image.filename) }}" 
+                                 class="card-img-top gallery-img" 
+                                 alt="{{ image.title or 'School Image' }}"
+                                 data-bs-toggle="modal" 
+                                 data-bs-target="#imageModal"
+                                 data-bs-src="{{ url_for('gallery_file', filename=image.filename) }}"
+                                 data-bs-title="{{ image.title or 'School Image' }}"
+                                 data-bs-description="{{ image.description or '' }}">
+                            
+                            {% if image.title or image.description %}
+                                <div class="card-body">
+                                    {% if image.title %}
+                                        <h6 class="card-title">{{ image.title }}</h6>
+                                    {% endif %}
+                                    {% if image.description %}
+                                        <p class="card-text text-muted small">{{ image.description }}</p>
+                                    {% endif %}
+                                    <small class="text-muted">{{ image.date_uploaded.strftime('%B %d, %Y') }}</small>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center text-muted py-5">
+                <i class="fas fa-images fa-4x mb-3"></i>
+                <h3>No Images Available</h3>
+                <p>Gallery images will appear here once they are uploaded by the administration.</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Image Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Image Title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="" class="img-fluid rounded" alt="Gallery Image" id="modalImage">
+                <p class="mt-3 text-muted" id="modalDescription"></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block head %}
+<style>
+.gallery-img {
+    height: 250px;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.gallery-img:hover {
+    transform: scale(1.05);
+}
+
+.gallery-card {
+    transition: box-shadow 0.3s ease;
+    overflow: hidden;
+}
+
+.gallery-card:hover {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+#modalImage {
+    max-height: 70vh;
+    object-fit: contain;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const imageModal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalTitle = document.getElementById('imageModalLabel');
+    const modalDescription = document.getElementById('modalDescription');
+
+    imageModal.addEventListener('show.bs.modal', function(event) {
+        const button = event.relatedTarget;
+        const src = button.getAttribute('data-bs-src');
+        const title = button.getAttribute('data-bs-title');
+        const description = button.getAttribute('data-bs-description');
+
+        modalImage.src = src;
+        modalTitle.textContent = title;
+        modalDescription.textContent = description;
+        
+        if (!description) {
+            modalDescription.style.display = 'none';
+        } else {
+            modalDescription.style.display = 'block';
+        }
+    });
+});
+</script>
+{% endblock %}

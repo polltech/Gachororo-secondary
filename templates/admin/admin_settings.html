@@ -1,0 +1,522 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Settings - Admin Dashboard{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="admin-header bg-primary text-white py-4">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="h3 mb-1">
+                    <i class="fas fa-cog me-2"></i>
+                    Admin Settings
+                </h1>
+                <p class="mb-0">Manage your admin account and security settings</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <a href="{{ url_for('dashboard') }}" class="btn btn-light">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Current Admin Info -->
+<section class="py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-user-shield me-2"></i>
+                            Current Admin Account
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="info-item mb-3">
+                                    <label class="form-label fw-bold text-muted">Username</label>
+                                    <div class="info-value">{{ current_user.username }}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info-item mb-3">
+                                    <label class="form-label fw-bold text-muted">Email Address</label>
+                                    <div class="info-value">{{ current_user.email }}</div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>
+                                    <strong>Important:</strong> Changing your credentials will require you to log in again with the new information.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Change Credentials Form -->
+<section class="py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0">
+                            <i class="fas fa-edit me-2"></i>
+                            Update Admin Credentials
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" id="settings-form">
+                            <div class="row">
+                                <div class="col-12 mb-4">
+                                    <h6 class="text-primary border-bottom pb-2">Security Verification</h6>
+                                </div>
+                                
+                                <div class="col-12 mb-3">
+                                    <label for="current_password" class="form-label fw-bold">Current Password *</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-lock"></i>
+                                        </span>
+                                        <input type="password" class="form-control" id="current_password" 
+                                               name="current_password" required
+                                               placeholder="Enter your current password">
+                                        <button class="btn btn-outline-secondary" type="button" id="toggleCurrentPassword">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="form-text">Required to verify your identity before making changes.</div>
+                                </div>
+                                
+                                <div class="col-12 mb-4">
+                                    <h6 class="text-success border-bottom pb-2">New Information</h6>
+                                </div>
+                                
+                                <div class="col-12 mb-3">
+                                    <label for="email" class="form-label fw-bold">New Email Address</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-envelope"></i>
+                                        </span>
+                                        <input type="email" class="form-control" id="email" name="email" 
+                                               value="{{ current_user.email }}"
+                                               placeholder="Enter new email address">
+                                    </div>
+                                    <div class="form-text">This will be your new login email address.</div>
+                                </div>
+                                
+                                <div class="col-12 mb-3">
+                                    <label for="new_password" class="form-label fw-bold">New Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-key"></i>
+                                        </span>
+                                        <input type="password" class="form-control" id="new_password" 
+                                               name="new_password"
+                                               placeholder="Enter new password (leave blank to keep current)">
+                                        <button class="btn btn-outline-secondary" type="button" id="toggleNewPassword">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="form-text">Leave blank if you don't want to change your password.</div>
+                                </div>
+                                
+                                <div class="col-12 mb-3" id="confirm-password-section" style="display: none;">
+                                    <label for="confirm_password" class="form-label fw-bold">Confirm New Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-key"></i>
+                                        </span>
+                                        <input type="password" class="form-control" id="confirm_password" 
+                                               name="confirm_password"
+                                               placeholder="Confirm your new password">
+                                        <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div id="password-match-feedback" class="form-text"></div>
+                                </div>
+                                
+                                <div class="col-12 text-center mt-4">
+                                    <button type="submit" class="btn btn-warning btn-lg px-5">
+                                        <i class="fas fa-save me-2"></i>Update Settings
+                                    </button>
+                                    <button type="reset" class="btn btn-secondary btn-lg px-5 ms-3">
+                                        <i class="fas fa-undo me-2"></i>Reset Changes
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Security Tips -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-shield-alt me-2"></i>
+                            Security Best Practices
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="security-tip">
+                                    <div class="tip-icon mb-2">
+                                        <i class="fas fa-lock fa-2x text-primary"></i>
+                                    </div>
+                                    <h6>Strong Passwords</h6>
+                                    <p class="text-muted small">Use at least 8 characters with a mix of uppercase, lowercase, numbers, and symbols.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <div class="security-tip">
+                                    <div class="tip-icon mb-2">
+                                        <i class="fas fa-sync-alt fa-2x text-success"></i>
+                                    </div>
+                                    <h6>Regular Updates</h6>
+                                    <p class="text-muted small">Change your password periodically and keep your login credentials secure.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <div class="security-tip">
+                                    <div class="tip-icon mb-2">
+                                        <i class="fas fa-user-secret fa-2x text-warning"></i>
+                                    </div>
+                                    <h6>Private Access</h6>
+                                    <p class="text-muted small">Never share your admin credentials and always log out when finished.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <div class="security-tip">
+                                    <div class="tip-icon mb-2">
+                                        <i class="fas fa-backup fa-2x text-info"></i>
+                                    </div>
+                                    <h6>Backup Access</h6>
+                                    <p class="text-muted small">Keep a record of your credentials in a secure location for recovery purposes.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Admin Actions -->
+<section class="py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card border-danger">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            Advanced Actions
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <h6>System Information</h6>
+                                <p class="text-muted small mb-2">Current session details and system status.</p>
+                                <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#systemInfoModal">
+                                    <i class="fas fa-info-circle me-2"></i>View System Info
+                                </button>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <h6>Logout All Sessions</h6>
+                                <p class="text-muted small mb-2">Force logout from all devices and sessions.</p>
+                                <a href="{{ url_for('logout') }}" class="btn btn-outline-warning btn-sm">
+                                    <i class="fas fa-sign-out-alt me-2"></i>Logout Now
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-danger mt-3">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <strong>Warning:</strong> These actions affect your admin access. Make sure you have your new credentials saved before proceeding.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- System Info Modal -->
+<div class="modal fade" id="systemInfoModal" tabindex="-1" aria-labelledby="systemInfoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="systemInfoModalLabel">System Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Admin Account</h6>
+                        <ul class="list-unstyled">
+                            <li><strong>Username:</strong> {{ current_user.username }}</li>
+                            <li><strong>Email:</strong> {{ current_user.email }}</li>
+                            <li><strong>Account Type:</strong> Administrator</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>System Status</h6>
+                        <ul class="list-unstyled">
+                            <li><strong>Application:</strong> Gachororo School Website</li>
+                            <li><strong>Status:</strong> <span class="text-success">Active</span></li>
+                            <li><strong>Access Level:</strong> Full Administrative</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block head %}
+<style>
+.admin-header {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+}
+
+.info-value {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #495057;
+    background-color: #f8f9fa;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem;
+    border: 1px solid #dee2e6;
+}
+
+.form-control:focus {
+    border-color: #ffc107;
+    box-shadow: 0 0 0 0.2rem rgba(255,193,7,0.25);
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+    border: none;
+    color: #212529;
+}
+
+.btn-warning:hover {
+    background: linear-gradient(135deg, #e0a800 0%, #d39e00 100%);
+    transform: translateY(-1px);
+    color: #212529;
+}
+
+.security-tip {
+    text-align: center;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    height: 100%;
+}
+
+.tip-icon {
+    margin: 0 auto;
+}
+
+.input-group-text {
+    background-color: #f8f9fa;
+    border-right: none;
+}
+
+.form-control {
+    border-left: none;
+}
+
+.password-strength {
+    height: 4px;
+    border-radius: 2px;
+    margin-top: 5px;
+    transition: all 0.3s ease;
+}
+
+.strength-weak { background-color: #dc3545; }
+.strength-medium { background-color: #ffc107; }
+.strength-strong { background-color: #28a745; }
+
+#password-match-feedback.text-success {
+    color: #28a745 !important;
+}
+
+#password-match-feedback.text-danger {
+    color: #dc3545 !important;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Password visibility toggles
+    function setupPasswordToggle(toggleButtonId, passwordInputId) {
+        const toggleButton = document.getElementById(toggleButtonId);
+        const passwordInput = document.getElementById(passwordInputId);
+        const toggleIcon = toggleButton.querySelector('i');
+
+        toggleButton.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            if (type === 'password') {
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            } else {
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            }
+        });
+    }
+
+    setupPasswordToggle('toggleCurrentPassword', 'current_password');
+    setupPasswordToggle('toggleNewPassword', 'new_password');
+    setupPasswordToggle('toggleConfirmPassword', 'confirm_password');
+
+    // Show/hide confirm password field
+    const newPasswordInput = document.getElementById('new_password');
+    const confirmPasswordSection = document.getElementById('confirm-password-section');
+    const confirmPasswordInput = document.getElementById('confirm_password');
+
+    newPasswordInput.addEventListener('input', function() {
+        if (this.value.length > 0) {
+            confirmPasswordSection.style.display = 'block';
+            confirmPasswordInput.required = true;
+        } else {
+            confirmPasswordSection.style.display = 'none';
+            confirmPasswordInput.required = false;
+            confirmPasswordInput.value = '';
+        }
+    });
+
+    // Password matching validation
+    const passwordMatchFeedback = document.getElementById('password-match-feedback');
+    
+    function checkPasswordMatch() {
+        const newPassword = newPasswordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+        
+        if (confirmPassword.length === 0) {
+            passwordMatchFeedback.textContent = '';
+            passwordMatchFeedback.className = 'form-text';
+            return;
+        }
+        
+        if (newPassword === confirmPassword) {
+            passwordMatchFeedback.textContent = 'Passwords match ✓';
+            passwordMatchFeedback.className = 'form-text text-success';
+        } else {
+            passwordMatchFeedback.textContent = 'Passwords do not match ✗';
+            passwordMatchFeedback.className = 'form-text text-danger';
+        }
+    }
+    
+    newPasswordInput.addEventListener('input', checkPasswordMatch);
+    confirmPasswordInput.addEventListener('input', checkPasswordMatch);
+
+    // Password strength indicator
+    function createPasswordStrengthIndicator() {
+        const strengthIndicator = document.createElement('div');
+        strengthIndicator.className = 'password-strength';
+        strengthIndicator.style.width = '0%';
+        newPasswordInput.parentNode.appendChild(strengthIndicator);
+        
+        newPasswordInput.addEventListener('input', function() {
+            const password = this.value;
+            let strength = 0;
+            
+            if (password.length >= 8) strength += 25;
+            if (/[A-Z]/.test(password)) strength += 25;
+            if (/[a-z]/.test(password)) strength += 25;
+            if (/[0-9]/.test(password)) strength += 25;
+            
+            strengthIndicator.style.width = strength + '%';
+            
+            if (strength < 50) {
+                strengthIndicator.className = 'password-strength strength-weak';
+            } else if (strength < 100) {
+                strengthIndicator.className = 'password-strength strength-medium';
+            } else {
+                strengthIndicator.className = 'password-strength strength-strong';
+            }
+        });
+    }
+    
+    createPasswordStrengthIndicator();
+
+    // Form validation before submit
+    const settingsForm = document.getElementById('settings-form');
+    settingsForm.addEventListener('submit', function(e) {
+        const newPassword = newPasswordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+        
+        if (newPassword && newPassword !== confirmPassword) {
+            e.preventDefault();
+            alert('New passwords do not match. Please check and try again.');
+            confirmPasswordInput.focus();
+            return false;
+        }
+        
+        if (newPassword && newPassword.length < 6) {
+            e.preventDefault();
+            alert('New password must be at least 6 characters long.');
+            newPasswordInput.focus();
+            return false;
+        }
+        
+        // Confirm critical action
+        if (!confirm('Are you sure you want to update your admin credentials? You will need to log in again with the new information.')) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+    // Reset form handler
+    settingsForm.addEventListener('reset', function() {
+        confirmPasswordSection.style.display = 'none';
+        confirmPasswordInput.required = false;
+        passwordMatchFeedback.textContent = '';
+        passwordMatchFeedback.className = 'form-text';
+        
+        // Reset password strength indicator
+        const strengthIndicator = document.querySelector('.password-strength');
+        if (strengthIndicator) {
+            strengthIndicator.style.width = '0%';
+            strengthIndicator.className = 'password-strength';
+        }
+    });
+});
+</script>
+{% endblock %}

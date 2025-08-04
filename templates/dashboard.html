@@ -1,0 +1,349 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Gachororo Secondary School{% endblock %}
+
+{% block content %}
+<!-- Dashboard Header -->
+<section class="dashboard-header bg-primary text-white py-4">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="h3 mb-1">
+                    <i class="fas fa-tachometer-alt me-2"></i>
+                    Admin Dashboard
+                </h1>
+                <p class="mb-0 text-light">Welcome back! Manage your school website content</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <div class="dashboard-user-info">
+                    <i class="fas fa-user-circle fa-2x me-2"></i>
+                    <span>{{ current_user.username }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Statistics Cards -->
+<section class="py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card stat-card border-left-primary h-100">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    News Articles
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_news }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-newspaper fa-2x text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card stat-card border-left-success h-100">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Events
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_events }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-calendar fa-2x text-success"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card stat-card border-left-info h-100">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    Staff Members
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_staff }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-users fa-2x text-info"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card stat-card border-left-warning h-100">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    Gallery Images
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_gallery }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-images fa-2x text-warning"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="card stat-card border-left-danger h-100">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                    E-Learning Resources
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_resources }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-book-open fa-2x text-danger"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quick Actions & Recent Activity -->
+<section class="py-4">
+    <div class="container">
+        <div class="row">
+            <!-- Quick Actions -->
+            <div class="col-lg-8 mb-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-bolt me-2"></i>
+                            Quick Actions
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <a href="{{ url_for('manage_content') }}" class="btn btn-outline-primary w-100 quick-action-btn">
+                                    <i class="fas fa-edit fa-2x mb-2 d-block"></i>
+                                    Edit Content
+                                </a>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <a href="{{ url_for('manage_gallery') }}" class="btn btn-outline-warning w-100 quick-action-btn">
+                                    <i class="fas fa-images fa-2x mb-2 d-block"></i>
+                                    Manage Gallery
+                                </a>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <a href="{{ url_for('manage_news') }}" class="btn btn-outline-success w-100 quick-action-btn">
+                                    <i class="fas fa-newspaper fa-2x mb-2 d-block"></i>
+                                    Add News/Event
+                                </a>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <a href="{{ url_for('manage_staff') }}" class="btn btn-outline-info w-100 quick-action-btn">
+                                    <i class="fas fa-user-tie fa-2x mb-2 d-block"></i>
+                                    Manage Staff
+                                </a>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <a href="{{ url_for('manage_elearning') }}" class="btn btn-outline-danger w-100 quick-action-btn">
+                                    <i class="fas fa-book-open fa-2x mb-2 d-block"></i>
+                                    E-Learning
+                                </a>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <a href="{{ url_for('admin_settings') }}" class="btn btn-outline-secondary w-100 quick-action-btn">
+                                    <i class="fas fa-cog fa-2x mb-2 d-block"></i>
+                                    Settings
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-clock me-2"></i>
+                            Recent News
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {% if recent_news %}
+                            {% for news in recent_news %}
+                                <div class="recent-item">
+                                    <h6 class="mb-1">{{ news.title }}</h6>
+                                    <p class="text-muted small mb-1">
+                                        {{ news.content[:80] }}{% if news.content|length > 80 %}...{% endif %}
+                                    </p>
+                                    <small class="text-muted">{{ news.date_created.strftime('%b %d, %Y') }}</small>
+                                    {% if not loop.last %}<hr class="my-2">{% endif %}
+                                </div>
+                            {% endfor %}
+                            <div class="text-center mt-3">
+                                <a href="{{ url_for('manage_news') }}" class="btn btn-sm btn-info">View All</a>
+                            </div>
+                        {% else %}
+                            <div class="text-center text-muted py-3">
+                                <i class="fas fa-newspaper fa-2x mb-2"></i>
+                                <p class="mb-0">No recent news</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Website Overview -->
+<section class="py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-secondary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-globe me-2"></i>
+                            Website Overview
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <h6 class="text-primary">Public Pages</h6>
+                                <ul class="list-unstyled">
+                                    <li><a href="{{ url_for('index') }}" target="_blank" class="text-decoration-none">
+                                        <i class="fas fa-home me-2"></i>Home Page
+                                    </a></li>
+                                    <li><a href="{{ url_for('about') }}" target="_blank" class="text-decoration-none">
+                                        <i class="fas fa-info-circle me-2"></i>About Us
+                                    </a></li>
+                                    <li><a href="{{ url_for('gallery') }}" target="_blank" class="text-decoration-none">
+                                        <i class="fas fa-images me-2"></i>Gallery
+                                    </a></li>
+                                    <li><a href="{{ url_for('news') }}" target="_blank" class="text-decoration-none">
+                                        <i class="fas fa-newspaper me-2"></i>News & Events
+                                    </a></li>
+                                    <li><a href="{{ url_for('achievements') }}" target="_blank" class="text-decoration-none">
+                                        <i class="fas fa-trophy me-2"></i>Achievements
+                                    </a></li>
+                                    <li><a href="{{ url_for('elearning') }}" target="_blank" class="text-decoration-none">
+                                        <i class="fas fa-book-open me-2"></i>E-Learning
+                                    </a></li>
+                                    <li><a href="{{ url_for('contact') }}" target="_blank" class="text-decoration-none">
+                                        <i class="fas fa-envelope me-2"></i>Contact
+                                    </a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-success">Management Areas</h6>
+                                <ul class="list-unstyled">
+                                    <li><a href="{{ url_for('manage_content') }}" class="text-decoration-none">
+                                        <i class="fas fa-edit me-2"></i>Content Management
+                                    </a></li>
+                                    <li><a href="{{ url_for('manage_gallery') }}" class="text-decoration-none">
+                                        <i class="fas fa-images me-2"></i>Gallery Management
+                                    </a></li>
+                                    <li><a href="{{ url_for('manage_news') }}" class="text-decoration-none">
+                                        <i class="fas fa-newspaper me-2"></i>News & Events
+                                    </a></li>
+                                    <li><a href="{{ url_for('manage_staff') }}" class="text-decoration-none">
+                                        <i class="fas fa-users me-2"></i>Staff Management
+                                    </a></li>
+                                    <li><a href="{{ url_for('manage_elearning') }}" class="text-decoration-none">
+                                        <i class="fas fa-book-open me-2"></i>E-Learning Resources
+                                    </a></li>
+                                    <li><a href="{{ url_for('admin_settings') }}" class="text-decoration-none">
+                                        <i class="fas fa-cog me-2"></i>Admin Settings
+                                    </a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block head %}
+<style>
+.dashboard-header {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+}
+
+.stat-card {
+    border-left: 4px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.border-left-primary { border-left-color: #007bff !important; }
+.border-left-success { border-left-color: #28a745 !important; }
+.border-left-info { border-left-color: #17a2b8 !important; }
+.border-left-warning { border-left-color: #ffc107 !important; }
+.border-left-danger { border-left-color: #dc3545 !important; }
+
+.quick-action-btn {
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.quick-action-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.recent-item {
+    margin-bottom: 15px;
+}
+
+.dashboard-user-info {
+    display: flex;
+    align-items: center;
+    color: rgba(255,255,255,0.9);
+}
+
+.text-xs {
+    font-size: 0.7rem;
+}
+
+.font-weight-bold {
+    font-weight: 700 !important;
+}
+
+.text-gray-800 {
+    color: #5a5c69 !important;
+}
+</style>
+{% endblock %}

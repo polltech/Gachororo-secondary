@@ -1,0 +1,300 @@
+{% extends "base.html" %}
+
+{% block title %}Achievements - Gachororo Secondary School{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header bg-primary text-white py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="display-4 fw-bold">Our Achievements</h1>
+                <p class="lead">Celebrating excellence and success in academics and beyond</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Achievements Content -->
+<section class="py-5">
+    <div class="container">
+        {% if content and content.achievements %}
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="card shadow-sm mb-5">
+                        <div class="card-body p-5">
+                            <h2 class="text-center mb-4">
+                                <i class="fas fa-trophy text-warning me-2"></i>
+                                Our Proud Achievements
+                            </h2>
+                            <div class="achievement-content">
+                                {{ content.achievements | safe }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Achievement Categories -->
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card achievement-card h-100">
+                    <div class="card-body text-center">
+                        <div class="achievement-icon mb-3">
+                            <i class="fas fa-graduation-cap fa-3x text-primary"></i>
+                        </div>
+                        <h4 class="card-title">Academic Excellence</h4>
+                        <p class="card-text">
+                            Our students consistently perform well in KCSE examinations, with many achieving 
+                            top grades and securing admission to prestigious universities and colleges.
+                        </p>
+                        <div class="achievement-stats">
+                            <div class="stat-item">
+                                <h5 class="text-primary mb-0">95%+</h5>
+                                <small class="text-muted">Pass Rate</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card achievement-card h-100">
+                    <div class="card-body text-center">
+                        <div class="achievement-icon mb-3">
+                            <i class="fas fa-medal fa-3x text-warning"></i>
+                        </div>
+                        <h4 class="card-title">Sports & Co-curricular</h4>
+                        <p class="card-text">
+                            Our students excel in various sports and co-curricular activities, winning 
+                            numerous competitions at regional and national levels.
+                        </p>
+                        <div class="achievement-stats">
+                            <div class="stat-item">
+                                <h5 class="text-warning mb-0">50+</h5>
+                                <small class="text-muted">Awards Won</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card achievement-card h-100">
+                    <div class="card-body text-center">
+                        <div class="achievement-icon mb-3">
+                            <i class="fas fa-star fa-3x text-success"></i>
+                        </div>
+                        <h4 class="card-title">Alumni Success</h4>
+                        <p class="card-text">
+                            Our graduates go on to make significant contributions in various fields, 
+                            becoming leaders in their communities and professions.
+                        </p>
+                        <div class="achievement-stats">
+                            <div class="stat-item">
+                                <h5 class="text-success mb-0">1000+</h5>
+                                <small class="text-muted">Successful Alumni</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- KCSE Results Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2>KCSE Performance</h2>
+                <p class="lead text-muted">Our track record in national examinations</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-md-3 mb-3">
+                                <div class="kcse-stat">
+                                    <h3 class="text-success mb-1">A</h3>
+                                    <small class="text-muted">Top Grade</small>
+                                    <p class="mb-0">5%</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="kcse-stat">
+                                    <h3 class="text-primary mb-1">B+</h3>
+                                    <small class="text-muted">Excellent</small>
+                                    <p class="mb-0">15%</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="kcse-stat">
+                                    <h3 class="text-info mb-1">B</h3>
+                                    <small class="text-muted">Good</small>
+                                    <p class="mb-0">25%</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="kcse-stat">
+                                    <h3 class="text-warning mb-1">C+</h3>
+                                    <small class="text-muted">Credit</small>
+                                    <p class="mb-0">30%</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <p class="text-muted">
+                                <small>* Based on recent KCSE examination results</small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Notable Achievements -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2>Notable Achievements</h2>
+                <p class="lead text-muted">Highlights from our journey of excellence</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="timeline-item">
+                    <div class="timeline-marker bg-primary"></div>
+                    <div class="timeline-content">
+                        <h5>Best Performing School</h5>
+                        <p class="text-muted">Recognized as one of the top performing schools in the region for three consecutive years.</p>
+                        <small class="text-muted">2021 - 2023</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 mb-4">
+                <div class="timeline-item">
+                    <div class="timeline-marker bg-success"></div>
+                    <div class="timeline-content">
+                        <h5>National Science Fair Winners</h5>
+                        <p class="text-muted">Our students won first place in the national science fair competition.</p>
+                        <small class="text-muted">2023</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 mb-4">
+                <div class="timeline-item">
+                    <div class="timeline-marker bg-warning"></div>
+                    <div class="timeline-content">
+                        <h5>Sports Championships</h5>
+                        <p class="text-muted">Multiple victories in regional and national sports competitions across various disciplines.</p>
+                        <small class="text-muted">2022 - 2024</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 mb-4">
+                <div class="timeline-item">
+                    <div class="timeline-marker bg-info"></div>
+                    <div class="timeline-content">
+                        <h5>Community Service Award</h5>
+                        <p class="text-muted">Honored for outstanding community service and environmental conservation efforts.</p>
+                        <small class="text-muted">2023</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h3>Join Our Success Story</h3>
+                <p class="lead mb-4">Be part of a school that nurtures excellence and character</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{{ url_for('contact') }}" class="btn btn-light btn-lg">Contact Us</a>
+                    <a href="{{ url_for('about') }}" class="btn btn-outline-light btn-lg">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block head %}
+<style>
+.achievement-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.achievement-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.achievement-icon i {
+    transition: transform 0.3s ease;
+}
+
+.achievement-card:hover .achievement-icon i {
+    transform: scale(1.1);
+}
+
+.achievement-stats {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.kcse-stat {
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    margin-bottom: 10px;
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 40px;
+    margin-bottom: 30px;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: 0;
+    top: 5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.timeline-content {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #007bff;
+}
+
+.achievement-content {
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+</style>
+{% endblock %}

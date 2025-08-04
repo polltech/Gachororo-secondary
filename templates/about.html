@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+
+{% block title %}About Us - Gachororo Secondary School{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header bg-primary text-white py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="display-4 fw-bold">About Us</h1>
+                <p class="lead">Learn more about our school's history, mission, and dedicated staff</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- School Information -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow-sm mb-5">
+                    <div class="card-body p-5">
+                        <h2 class="text-center mb-4">Our Story</h2>
+                        {% if content and content.history %}
+                            <p class="lead text-muted">{{ content.history }}</p>
+                        {% else %}
+                            <p class="lead text-muted">
+                                Gachororo Secondary School was established with a vision to provide quality education 
+                                to the students in our community. Since our founding, we have been committed to 
+                                academic excellence, character development, and preparing our students for success 
+                                in their future endeavors.
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mission, Vision, Motto -->
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="fas fa-bullseye fa-3x text-primary"></i>
+                        </div>
+                        <h4 class="card-title">Our Mission</h4>
+                        <p class="card-text">
+                            {% if content and content.mission %}
+                                {{ content.mission }}
+                            {% else %}
+                                To provide quality education that empowers students to become responsible citizens and leaders.
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="fas fa-eye fa-3x text-success"></i>
+                        </div>
+                        <h4 class="card-title">Our Vision</h4>
+                        <p class="card-text">
+                            {% if content and content.vision %}
+                                {{ content.vision }}
+                            {% else %}
+                                To be a leading institution of academic excellence and character formation.
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="fas fa-quote-left fa-3x text-warning"></i>
+                        </div>
+                        <h4 class="card-title">Our Motto</h4>
+                        <p class="card-text fs-5 fw-bold text-primary">
+                            {% if content and content.motto %}
+                                "{{ content.motto }}"
+                            {% else %}
+                                "Knowledge, Character, Service"
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Staff Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2>Our Dedicated Staff</h2>
+                <p class="lead text-muted">Meet the passionate educators who make our school exceptional</p>
+            </div>
+        </div>
+        
+        {% if staff_members %}
+            <div class="row">
+                {% for staff in staff_members %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card staff-card h-100">
+                            <div class="card-body text-center">
+                                {% if staff.photo_filename %}
+                                    <img src="{{ url_for('gallery_file', filename=staff.photo_filename) }}" 
+                                         class="staff-photo mb-3" 
+                                         alt="{{ staff.name }}">
+                                {% else %}
+                                    <div class="staff-photo-placeholder mb-3">
+                                        <i class="fas fa-user fa-3x text-muted"></i>
+                                    </div>
+                                {% endif %}
+                                
+                                <h5 class="card-title">{{ staff.name }}</h5>
+                                <p class="text-primary fw-semibold">{{ staff.position }}</p>
+                                
+                                {% if staff.qualifications %}
+                                    <p class="text-muted small mb-2">
+                                        <strong>Qualifications:</strong> {{ staff.qualifications }}
+                                    </p>
+                                {% endif %}
+                                
+                                {% if staff.subjects %}
+                                    <p class="text-muted small">
+                                        <strong>Subjects:</strong> {{ staff.subjects }}
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center text-muted py-5">
+                <i class="fas fa-users fa-4x mb-3"></i>
+                <p>Staff information will be available soon.</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- School Values -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2>Our Core Values</h2>
+                <p class="lead text-muted">The principles that guide everything we do</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="text-center">
+                    <div class="value-icon mb-3">
+                        <i class="fas fa-graduation-cap fa-3x text-primary"></i>
+                    </div>
+                    <h5>Academic Excellence</h5>
+                    <p class="text-muted">Striving for the highest standards in teaching and learning</p>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-4">
+                <div class="text-center">
+                    <div class="value-icon mb-3">
+                        <i class="fas fa-handshake fa-3x text-success"></i>
+                    </div>
+                    <h5>Integrity</h5>
+                    <p class="text-muted">Building character and moral values in all our students</p>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-4">
+                <div class="text-center">
+                    <div class="value-icon mb-3">
+                        <i class="fas fa-users fa-3x text-warning"></i>
+                    </div>
+                    <h5>Community</h5>
+                    <p class="text-muted">Fostering a sense of belonging and mutual support</p>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-4">
+                <div class="text-center">
+                    <div class="value-icon mb-3">
+                        <i class="fas fa-lightbulb fa-3x text-info"></i>
+                    </div>
+                    <h5>Innovation</h5>
+                    <p class="text-muted">Embracing new ideas and modern teaching methods</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block head %}
+<style>
+.staff-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #f8f9fa;
+}
+
+.staff-photo-placeholder {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    border: 4px solid #e9ecef;
+}
+
+.staff-card {
+    transition: transform 0.3s ease;
+}
+
+.staff-card:hover {
+    transform: translateY(-5px);
+}
+
+.value-icon i {
+    transition: transform 0.3s ease;
+}
+
+.value-icon:hover i {
+    transform: scale(1.1);
+}
+</style>
+{% endblock %}

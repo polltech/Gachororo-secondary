@@ -1,0 +1,283 @@
+{% extends "base.html" %}
+
+{% block title %}E-Learning - Gachororo Secondary School{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header bg-primary text-white py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="display-4 fw-bold">E-Learning Resources</h1>
+                <p class="lead">Access study materials, past papers, and video lessons for Forms 1-4</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Filter Section -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <form method="GET" class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label for="form" class="form-label">Filter by Form</label>
+                <select class="form-select" name="form" id="form">
+                    <option value="">All Forms</option>
+                    {% for form in forms %}
+                        <option value="{{ form }}" {% if selected_form == form %}selected{% endif %}>
+                            {{ form }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="col-md-4">
+                <label for="subject" class="form-label">Filter by Subject</label>
+                <select class="form-select" name="subject" id="subject">
+                    <option value="">All Subjects</option>
+                    {% for subject in subjects %}
+                        <option value="{{ subject }}" {% if selected_subject == subject %}selected{% endif %}>
+                            {{ subject }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-filter me-2"></i>Filter Resources
+                </button>
+            </div>
+        </form>
+        
+        {% if selected_form or selected_subject %}
+            <div class="mt-3">
+                <span class="badge bg-secondary me-2">
+                    Filtered by:
+                    {% if selected_form %}{{ selected_form }}{% endif %}
+                    {% if selected_subject %}{{ selected_subject }}{% endif %}
+                </span>
+                <a href="{{ url_for('elearning') }}" class="btn btn-sm btn-outline-secondary">
+                    <i class="fas fa-times me-1"></i>Clear Filters
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Resources Section -->
+<section class="py-5">
+    <div class="container">
+        {% if resources %}
+            <div class="row">
+                <div class="col-12 mb-4">
+                    <h3>
+                        <i class="fas fa-book-open text-primary me-2"></i>
+                        Learning Resources
+                        <span class="badge bg-primary">{{ resources|length }}</span>
+                    </h3>
+                </div>
+            </div>
+            
+            <div class="row">
+                {% for resource in resources %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card resource-card h-100">
+                            <div class="card-header bg-light">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">{{ resource.form }}</small>
+                                    {% if resource.resource_type == 'file' %}
+                                        <span class="badge bg-success">
+                                            <i class="fas fa-file-alt me-1"></i>File
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-danger">
+                                            <i class="fab fa-youtube me-1"></i>Video
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="card-body">
+                                <h6 class="card-title">{{ resource.title }}</h6>
+                                <p class="text-primary fw-semibold mb-2">{{ resource.subject }}</p>
+                                
+                                {% if resource.description %}
+                                    <p class="card-text text-muted small">{{ resource.description }}</p>
+                                {% endif %}
+                                
+                                <div class="mt-auto">
+                                    {% if resource.resource_type == 'file' and resource.filename %}
+                                        {% if resource.filename.endswith(('.pdf', '.doc', '.docx')) %}
+                                            <a href="{{ url_for('papers_file', filename=resource.filename) }}" 
+                                               class="btn btn-success w-100" target="_blank">
+                                                <i class="fas fa-download me-2"></i>Download Paper
+                                            </a>
+                                        {% else %}
+                                            <a href="{{ url_for('videos_file', filename=resource.filename) }}" 
+                                               class="btn btn-primary w-100" target="_blank">
+                                                <i class="fas fa-play me-2"></i>Watch Video
+                                            </a>
+                                        {% endif %}
+                                    {% elif resource.resource_type == 'youtube' and resource.youtube_url %}
+                                        <a href="{{ resource.youtube_url }}" 
+                                           class="btn btn-danger w-100" target="_blank">
+                                            <i class="fab fa-youtube me-2"></i>Watch on YouTube
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="card-footer bg-light">
+                                <small class="text-muted">
+                                    <i class="fas fa-calendar me-1"></i>
+                                    Uploaded {{ resource.date_uploaded.strftime('%B %d, %Y') }}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center text-muted py-5">
+                <i class="fas fa-book-open fa-4x mb-3"></i>
+                <h3>No Resources Available</h3>
+                {% if selected_form or selected_subject %}
+                    <p>No resources found for the selected filters. Try adjusting your search criteria.</p>
+                    <a href="{{ url_for('elearning') }}" class="btn btn-primary">View All Resources</a>
+                {% else %}
+                    <p>E-learning resources will be available here once uploaded by the administration.</p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Study Tips Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center mb-5">
+                <h2>Study Tips for Success</h2>
+                <p class="lead text-muted">Make the most of your learning experience</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="card study-tip-card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-clock fa-2x text-primary mb-3"></i>
+                        <h6 class="card-title">Create a Schedule</h6>
+                        <p class="card-text small">Set aside dedicated time for studying each subject regularly.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-4">
+                <div class="card study-tip-card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-pencil-alt fa-2x text-success mb-3"></i>
+                        <h6 class="card-title">Take Notes</h6>
+                        <p class="card-text small">Write down key points while studying to improve retention.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-4">
+                <div class="card study-tip-card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-users fa-2x text-warning mb-3"></i>
+                        <h6 class="card-title">Study Groups</h6>
+                        <p class="card-text small">Form study groups with classmates to discuss difficult topics.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3 mb-4">
+                <div class="card study-tip-card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-question-circle fa-2x text-info mb-3"></i>
+                        <h6 class="card-title">Ask Questions</h6>
+                        <p class="card-text small">Don't hesitate to ask teachers for clarification on difficult concepts.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Help Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h3>Need Help with Your Studies?</h3>
+                <p class="lead mb-4">Our teachers are here to support your learning journey</p>
+                <div class="row justify-content-center">
+                    <div class="col-md-4 mb-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <i class="fas fa-phone fa-2x me-3"></i>
+                            <div>
+                                <strong>Call School</strong><br>
+                                <span>+254 700 000 000</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <i class="fas fa-envelope fa-2x me-3"></i>
+                            <div>
+                                <strong>Email Us</strong><br>
+                                <span>info@gachororo.ac.ke</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <a href="{{ url_for('contact') }}" class="btn btn-light btn-lg">
+                            <i class="fas fa-comments me-2"></i>Contact Form
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block head %}
+<style>
+.resource-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.resource-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.study-tip-card {
+    transition: transform 0.3s ease;
+    border: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.study-tip-card:hover {
+    transform: translateY(-5px);
+}
+
+.study-tip-card i {
+    transition: transform 0.3s ease;
+}
+
+.study-tip-card:hover i {
+    transform: scale(1.1);
+}
+
+.page-header {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+}
+</style>
+{% endblock %}

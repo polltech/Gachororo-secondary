@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Content - Admin Dashboard{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="admin-header bg-primary text-white py-4">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="h3 mb-1">
+                    <i class="fas fa-edit me-2"></i>
+                    Content Management
+                </h1>
+                <p class="mb-0">Edit school information, mission, vision, and contact details</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <a href="{{ url_for('dashboard') }}" class="btn btn-light">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Content Form -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="card shadow">
+                    <div class="card-body p-5">
+                        <form method="POST">
+                            <div class="row">
+                                <!-- School Name -->
+                                <div class="col-12 mb-4">
+                                    <label for="school_name" class="form-label fw-bold">School Name</label>
+                                    <input type="text" class="form-control" id="school_name" name="school_name" 
+                                           value="{{ content.school_name if content else 'Gachororo Secondary School' }}" required>
+                                </div>
+
+                                <!-- Principal Message -->
+                                <div class="col-12 mb-4">
+                                    <label for="principal_message" class="form-label fw-bold">Principal's Welcome Message</label>
+                                    <textarea class="form-control" id="principal_message" name="principal_message" rows="4"
+                                              placeholder="Enter the principal's welcome message for the homepage">{{ content.principal_message if content else '' }}</textarea>
+                                    <div class="form-text">This message will appear on the homepage hero section.</div>
+                                </div>
+
+                                <!-- Mission, Vision, Motto -->
+                                <div class="col-md-4 mb-4">
+                                    <label for="mission" class="form-label fw-bold">Mission Statement</label>
+                                    <textarea class="form-control" id="mission" name="mission" rows="5"
+                                              placeholder="Enter the school's mission statement">{{ content.mission if content else '' }}</textarea>
+                                </div>
+
+                                <div class="col-md-4 mb-4">
+                                    <label for="vision" class="form-label fw-bold">Vision Statement</label>
+                                    <textarea class="form-control" id="vision" name="vision" rows="5"
+                                              placeholder="Enter the school's vision statement">{{ content.vision if content else '' }}</textarea>
+                                </div>
+
+                                <div class="col-md-4 mb-4">
+                                    <label for="motto" class="form-label fw-bold">School Motto</label>
+                                    <input type="text" class="form-control" id="motto" name="motto" 
+                                           value="{{ content.motto if content else '' }}"
+                                           placeholder="e.g., Knowledge, Character, Service">
+                                    <div class="form-text">A short, memorable phrase that represents the school's values.</div>
+                                </div>
+
+                                <!-- School History -->
+                                <div class="col-12 mb-4">
+                                    <label for="history" class="form-label fw-bold">School History</label>
+                                    <textarea class="form-control" id="history" name="history" rows="6"
+                                              placeholder="Tell the story of how the school was founded and its journey">{{ content.history if content else '' }}</textarea>
+                                    <div class="form-text">This will appear on the About Us page.</div>
+                                </div>
+
+                                <!-- Achievements -->
+                                <div class="col-12 mb-4">
+                                    <label for="achievements" class="form-label fw-bold">School Achievements</label>
+                                    <textarea class="form-control" id="achievements" name="achievements" rows="6"
+                                              placeholder="Highlight the school's major achievements, awards, and milestones">{{ content.achievements if content else '' }}</textarea>
+                                    <div class="form-text">Include KCSE results, awards, competitions won, etc.</div>
+                                </div>
+
+                                <!-- Contact Information -->
+                                <div class="col-12 mb-4">
+                                    <h5 class="text-primary border-bottom pb-2 mb-3">Contact Information</h5>
+                                </div>
+
+                                <div class="col-md-6 mb-4">
+                                    <label for="contact_address" class="form-label fw-bold">School Address</label>
+                                    <textarea class="form-control" id="contact_address" name="contact_address" rows="3"
+                                              placeholder="Enter the complete school address">{{ content.contact_address if content else '' }}</textarea>
+                                </div>
+
+                                <div class="col-md-3 mb-4">
+                                    <label for="contact_phone" class="form-label fw-bold">Phone Number</label>
+                                    <input type="tel" class="form-control" id="contact_phone" name="contact_phone" 
+                                           value="{{ content.contact_phone if content else '' }}"
+                                           placeholder="+254 700 000 000">
+                                </div>
+
+                                <div class="col-md-3 mb-4">
+                                    <label for="contact_email" class="form-label fw-bold">Email Address</label>
+                                    <input type="email" class="form-control" id="contact_email" name="contact_email" 
+                                           value="{{ content.contact_email if content else '' }}"
+                                           placeholder="info@gachororo.ac.ke">
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div class="col-12 text-center">
+                                    <button type="submit" class="btn btn-primary btn-lg px-5">
+                                        <i class="fas fa-save me-2"></i>Save Changes
+                                    </button>
+                                    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary btn-lg px-5 ms-3">
+                                        Cancel
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Preview Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-eye me-2"></i>
+                            Preview Changes
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted mb-3">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Preview how your changes will appear on the website:
+                        </p>
+                        <div class="d-flex gap-3 flex-wrap">
+                            <a href="{{ url_for('index') }}" target="_blank" class="btn btn-outline-primary">
+                                <i class="fas fa-home me-2"></i>View Homepage
+                            </a>
+                            <a href="{{ url_for('about') }}" target="_blank" class="btn btn-outline-info">
+                                <i class="fas fa-info-circle me-2"></i>View About Page
+                            </a>
+                            <a href="{{ url_for('achievements') }}" target="_blank" class="btn btn-outline-warning">
+                                <i class="fas fa-trophy me-2"></i>View Achievements
+                            </a>
+                            <a href="{{ url_for('contact') }}" target="_blank" class="btn btn-outline-success">
+                                <i class="fas fa-envelope me-2"></i>View Contact Page
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block head %}
+<style>
+.admin-header {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+}
+
+.form-label.fw-bold {
+    color: #495057;
+    font-size: 0.95rem;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+    transform: translateY(-1px);
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-resize textareas
+    const textareas = document.querySelectorAll('textarea');
+    textareas.forEach(textarea => {
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = this.scrollHeight + 'px';
+        });
+    });
+
+    // Character counter for principal message
+    const principalMessage = document.getElementById('principal_message');
+    if (principalMessage) {
+        const counter = document.createElement('div');
+        counter.className = 'form-text text-end';
+        counter.id = 'message-counter';
+        principalMessage.parentNode.appendChild(counter);
+        
+        function updateCounter() {
+            const length = principalMessage.value.length;
+            counter.textContent = `${length} characters`;
+            if (length > 200) {
+                counter.classList.add('text-warning');
+            } else {
+                counter.classList.remove('text-warning');
+            }
+        }
+        
+        principalMessage.addEventListener('input', updateCounter);
+        updateCounter();
+    }
+});
+</script>
+{% endblock %}

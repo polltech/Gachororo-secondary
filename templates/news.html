@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+
+{% block title %}News & Events - Gachororo Secondary School{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header bg-primary text-white py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="display-4 fw-bold">News & Events</h1>
+                <p class="lead">Stay updated with the latest happenings at our school</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- News & Events Content -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <!-- News Section -->
+            <div class="col-lg-6 mb-5">
+                <h2 class="mb-4">
+                    <i class="fas fa-newspaper text-primary me-2"></i>
+                    Latest News
+                </h2>
+                
+                {% if news_items %}
+                    {% for news in news_items %}
+                        <div class="card mb-4 news-card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ news.title }}</h5>
+                                <p class="card-text">{{ news.content }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">
+                                        <i class="fas fa-calendar me-1"></i>
+                                        {{ news.date_created.strftime('%B %d, %Y') }}
+                                    </small>
+                                    <span class="badge bg-primary">News</span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center text-muted py-5">
+                        <i class="fas fa-newspaper fa-3x mb-3"></i>
+                        <h5>No News Available</h5>
+                        <p>Latest news updates will appear here.</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Events Section -->
+            <div class="col-lg-6 mb-5">
+                <h2 class="mb-4">
+                    <i class="fas fa-calendar text-success me-2"></i>
+                    Upcoming Events
+                </h2>
+                
+                {% if events %}
+                    {% for event in events %}
+                        <div class="card mb-4 event-card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ event.title }}</h5>
+                                <p class="card-text">{{ event.content }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">
+                                        <i class="fas fa-calendar me-1"></i>
+                                        {{ event.date_created.strftime('%B %d, %Y') }}
+                                    </small>
+                                    <span class="badge bg-success">Event</span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center text-muted py-5">
+                        <i class="fas fa-calendar fa-3x mb-3"></i>
+                        <h5>No Events Scheduled</h5>
+                        <p>Upcoming events will be posted here.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Important Notices -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-center mb-5">
+                    <i class="fas fa-bullhorn text-warning me-2"></i>
+                    Important Notices
+                </h2>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card notice-card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-clock fa-2x text-primary mb-3"></i>
+                                <h5 class="card-title">School Hours</h5>
+                                <p class="card-text">
+                                    Monday - Friday: 7:30 AM - 4:30 PM<br>
+                                    Saturday: 8:00 AM - 12:00 PM
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-4">
+                        <div class="card notice-card h-100">
+                            <div class="card-body text-center">
+                                <i class="fas fa-calendar-check fa-2x text-success mb-3"></i>
+                                <h5 class="card-title">Term Calendar</h5>
+                                <p class="card-text">
+                                    Please check with the administration for the current term calendar and important academic dates.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact for Updates -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h3>Stay Connected</h3>
+                <p class="lead mb-4">Don't miss any important updates from our school</p>
+                <div class="row justify-content-center">
+                    <div class="col-md-4 mb-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <i class="fas fa-phone fa-2x me-3"></i>
+                            <div>
+                                <strong>Call Us</strong><br>
+                                <span>+254 700 000 000</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <i class="fas fa-envelope fa-2x me-3"></i>
+                            <div>
+                                <strong>Email Us</strong><br>
+                                <span>info@gachororo.ac.ke</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <i class="fab fa-whatsapp fa-2x me-3"></i>
+                            <div>
+                                <strong>WhatsApp</strong><br>
+                                <span>+254 700 000 000</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block head %}
+<style>
+.news-card, .event-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.news-card:hover, .event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.notice-card {
+    transition: transform 0.3s ease;
+}
+
+.notice-card:hover {
+    transform: translateY(-5px);
+}
+
+.notice-card i {
+    transition: transform 0.3s ease;
+}
+
+.notice-card:hover i {
+    transform: scale(1.1);
+}
+</style>
+{% endblock %}
