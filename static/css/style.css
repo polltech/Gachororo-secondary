@@ -732,3 +732,191 @@ footer::before {
 [data-theme="blue"] .hero-section {
     background: var(--school-gradient);
 }
+
+/* Enhanced Footer Styles */
+.footer-brand h6 {
+    color: #ffffff;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.footer-brand small {
+    color: rgba(255,255,255,0.6);
+    font-weight: 500;
+}
+
+.footer-links a.hover-accent:hover {
+    color: var(--school-accent) !important;
+    transition: all 0.3s ease;
+    transform: translateY(-1px);
+}
+
+.footer-contact {
+    font-size: 0.8rem;
+}
+
+.footer-contact i {
+    color: var(--school-accent);
+    opacity: 0.8;
+}
+
+footer {
+    border-top: 1px solid rgba(255,255,255,0.1) !important;
+    backdrop-filter: blur(10px);
+}
+
+/* Enhanced AI Tutor Message Animations */
+@keyframes messageSlideIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(15px) scale(0.95); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0) scale(1); 
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200px 0;
+    }
+    100% {
+        background-position: calc(200px + 100%) 0;
+    }
+}
+
+/* Enhanced Visual Elements */
+.gradient-text {
+    background: linear-gradient(135deg, var(--school-primary) 0%, var(--school-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+}
+
+.glass-effect {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+}
+
+.soft-shadow {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.hover-lift {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15), 0 4px 16px rgba(0,0,0,0.1);
+}
+
+.text-enhanced {
+    line-height: 1.7;
+    letter-spacing: -0.01em;
+    font-weight: 450;
+}
+
+/* Enhanced Button Styles */
+.btn {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.1) !important;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn:hover {
+    transform: translateY(-3px) scale(1.02) !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15), 0 4px 12px rgba(0,0,0,0.1) !important;
+}
+
+.btn-primary {
+    font-weight: 700 !important;
+}
+
+.btn-lg {
+    padding: 0.875rem 2rem !important;
+    font-size: 1.1rem !important;
+    border-radius: 15px !important;
+}
+
+.btn-sm {
+    border-radius: 8px !important;
+}
+
+/* Enhanced Card Styles */
+.card {
+    border-radius: 15px !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.card:hover {
+    transform: translateY(-8px) !important;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15) !important;
+}
+
+.card-header {
+    border-radius: 15px 15px 0 0 !important;
+}
+
+/* Responsive Footer Improvements */
+@media (max-width: 768px) {
+    .footer-links {
+        display: flex !important;
+        margin-top: 8px;
+        gap: 1rem !important;
+        flex-wrap: wrap;
+    }
+    
+    .footer-contact {
+        flex-direction: column !important;
+        gap: 0.5rem !important;
+        align-items: start !important;
+    }
+    
+    footer .container-fluid {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+    
+    .footer-brand {
+        margin-bottom: 1rem;
+    }
+}

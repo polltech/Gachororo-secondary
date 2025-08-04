@@ -106,41 +106,31 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-dark text-light py-minimal mt-minimal">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <h5 class="fw-bold mb-2">Gachororo Secondary School</h5>
-                    <p class="text-muted mb-0">Committed to academic excellence and character development for all our students.</p>
-                </div>
-                
-                <div class="col-md-4 mb-3">
-                    <h6 class="fw-bold mb-2">Quick Links</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="{{ url_for('about') }}" class="text-muted text-decoration-none">About Us</a></li>
-                        <li><a href="{{ url_for('elearning') }}" class="text-muted text-decoration-none">E-Learning</a></li>
-                        <li><a href="{{ url_for('news') }}" class="text-muted text-decoration-none">News & Events</a></li>
-                        <li><a href="{{ url_for('contact') }}" class="text-muted text-decoration-none">Contact</a></li>
-                    </ul>
-                </div>
-                
-                <div class="col-md-4 mb-3">
-                    <h6 class="fw-bold mb-2">Contact Info</h6>
-                    <div class="text-muted">
-                        <p><i class="fas fa-map-marker-alt me-2"></i> Gachororo, Kenya</p>
-                        <p><i class="fas fa-phone me-2"></i> +254 700 000 000</p>
-                        <p><i class="fas fa-envelope me-2"></i> info@gachororo.ac.ke</p>
+    <footer class="bg-dark text-light py-2 mt-4">
+        <div class="container-fluid px-4">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-8 mb-2 mb-md-0">
+                    <div class="d-flex flex-wrap align-items-center gap-3">
+                        <div class="footer-brand">
+                            <h6 class="fw-bold mb-0 text-white">Gachororo Secondary School</h6>
+                            <small class="text-muted">Excellence in Education</small>
+                        </div>
+                        <div class="footer-links d-none d-md-flex gap-3">
+                            <a href="{{ url_for('about') }}" class="text-muted text-decoration-none hover-accent">About</a>
+                            <a href="{{ url_for('elearning') }}" class="text-muted text-decoration-none hover-accent">E-Learning</a>
+                            <a href="{{ url_for('ai_tutor') }}" class="text-muted text-decoration-none hover-accent">AI Tutor</a>
+                            <a href="{{ url_for('contact') }}" class="text-muted text-decoration-none hover-accent">Contact</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <hr class="border-secondary">
-            <div class="row">
-                <div class="col-md-6">
-                    <p class="text-muted mb-0">&copy; {{ moment().year if moment else '2024' }} Gachororo Secondary School. All rights reserved.</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <p class="text-muted mb-0">Made with <i class="fas fa-heart text-danger"></i> for education</p>
+                <div class="col-lg-6 col-md-4 text-md-end">
+                    <div class="d-flex flex-column align-items-md-end">
+                        <div class="footer-contact d-flex gap-3 mb-1">
+                            <small class="text-muted"><i class="fas fa-phone me-1"></i> +254 700 000 000</small>
+                            <small class="text-muted"><i class="fas fa-envelope me-1"></i> info@gachororo.ac.ke</small>
+                        </div>
+                        <small class="text-muted">&copy; {{ moment().year if moment else '2024' }} All rights reserved</small>
+                    </div>
                 </div>
             </div>
         </div>
