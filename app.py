@@ -39,17 +39,40 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 # Import models after db is initialized
-from models import User, SchoolContent, NewsEvent, StaffMember, GalleryImage, ELearningResource
+from models import User, SchoolContent, NewsEvent, StaffMember, GalleryImage, ELearningResource, SiteSettings, ThemeSettings, VideoSettings
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+# Context processor for global variables
+@app.context_processor
+def inject_global_vars():
+    try:
+        # Get current theme
+        current_theme = ThemeSettings.query.filter_by(is_active=True).first()
+        theme_name = current_theme.theme_name if current_theme else 'blue'
+        
+        # Get active video
+        active_video = VideoSettings.query.filter_by(is_active=True).first()
+        
+        return {
+            'current_theme': theme_name,
+            'active_video': active_video
+        }
+    except:
+        # Tables might not exist yet
+        return {
+            'current_theme': 'blue',
+            'active_video': None
+        }
 
 # Create uploads directory if it doesn't exist
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], 'papers'), exist_ok=True)
 os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], 'videos'), exist_ok=True)
 os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], 'gallery'), exist_ok=True)
+os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], 'background_videos'), exist_ok=True)
 
 def allowed_file(filename, file_type):
     if file_type == 'image':
@@ -139,6 +162,70 @@ def contact():
     
     content = SchoolContent.query.first()
     return render_template('contact.html', content=content)
+
+@app.route('/ai-tutor', methods=['GET', 'POST'])
+def ai_tutor():
+    if request.method == 'POST':
+        try:
+            import json
+            from google import genai
+            from google.genai import types
+            
+            # Get Gemini API key from settings
+            api_key_setting = SiteSettings.query.filter_by(setting_name='gemini_api_key').first()
+            if not api_key_setting or not api_key_setting.setting_value:
+                return {'error': 'Gemini API key not configured. Please contact administrator.'}, 400
+            
+            client = genai.Client(api_key=api_key_setting.setting_value)
+            
+            user_question = request.form.get('question')
+            if not user_question:
+                return {'error': 'Please enter a question.'}, 400
+            
+            # Create educational context prompt
+            system_prompt = (
+                "You are an AI tutor for Gachororo Secondary School students. "
+                "Provide helpful, accurate, and educational responses. "
+                "Focus on secondary school curriculum topics including Mathematics, "
+                "English, Kiswahili, Sciences, Social Studies, and other subjects. "
+                "Keep responses clear and suitable for secondary school students. "
+                "If a question is not educational, politely redirect to school topics."
+            )
+            
+            # Handle image upload if present
+            contents = []
+            if 'image' in request.files and request.files['image'].filename:
+                image_file = request.files['image']
+                if allowed_file(image_file.filename, 'image'):
+                    image_bytes = image_file.read()
+                    contents.append(
+                        types.Part.from_bytes(
+                            data=image_bytes,
+                            mime_type=f"image/{image_file.filename.rsplit('.', 1)[1].lower()}"
+                        )
+                    )
+            
+            contents.append(types.Part(text=user_question))
+            
+            response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=[
+                    types.Content(role="user", parts=contents)
+                ],
+                config=types.GenerateContentConfig(
+                    system_instruction=system_prompt,
+                    temperature=0.7
+                )
+            )
+            
+            return {
+                'response': response.text if response.text else 'Sorry, I could not generate a response.'
+            }
+            
+        except Exception as e:
+            return {'error': f'Error processing request: {str(e)}'}, 500
+    
+    return render_template('ai_tutor.html')
 
 # Authentication Routes
 @app.route('/login', methods=['GET', 'POST'])
@@ -485,6 +572,129 @@ def admin_settings():
     
     return render_template('admin/admin_settings.html')
 
+@app.route('/admin/theme-settings', methods=['GET', 'POST'])
+@login_required
+def admin_theme_settings():
+    if request.method == 'POST':
+        selected_theme = request.form.get('theme')
+        
+        # Deactivate all themes
+        ThemeSettings.query.update({'is_active': False})
+        
+        # Activate selected theme or create new one
+        theme = ThemeSettings.query.filter_by(theme_name=selected_theme).first()
+        if not theme:
+            theme = ThemeSettings(theme_name=selected_theme, is_active=True)
+            db.session.add(theme)
+        else:
+            theme.is_active = True
+        
+        db.session.commit()
+        flash(f'Theme changed to {selected_theme.title()}!', 'success')
+        return redirect(url_for('admin_theme_settings'))
+    
+    current_theme = ThemeSettings.query.filter_by(is_active=True).first()
+    themes = ['blue', 'red', 'gray']
+    
+    return render_template('admin/theme_settings.html', 
+                         current_theme=current_theme, 
+                         themes=themes)
+
+@app.route('/admin/video-settings', methods=['GET', 'POST'])
+@login_required
+def admin_video_settings():
+    if request.method == 'POST':
+        if 'video_file' in request.files:
+            file = request.files['video_file']
+            title = request.form.get('title', '')
+            
+            if file and file.filename and allowed_file(file.filename, 'video'):
+                filename = secure_filename(file.filename)
+                timestamp = datetime.now().strftime('%Y%m%d_%H%M%S_')
+                filename = timestamp + filename
+                
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], 'background_videos', filename))
+                
+                # Deactivate all current videos
+                VideoSettings.query.update({'is_active': False})
+                
+                # Create new video setting
+                video_setting = VideoSettings(
+                    video_filename=filename,
+                    video_title=title,
+                    is_active=True
+                )
+                db.session.add(video_setting)
+                db.session.commit()
+                
+                flash('Background video updated successfully!', 'success')
+            else:
+                flash('Invalid video file. Please upload MP4, AVI, MOV, or WMV files.', 'error')
+        elif 'deactivate_video' in request.form:
+            VideoSettings.query.update({'is_active': False})
+            db.session.commit()
+            flash('Background video disabled.', 'info')
+    
+    active_video = VideoSettings.query.filter_by(is_active=True).first()
+    all_videos = VideoSettings.query.order_by(VideoSettings.date_uploaded.desc()).all()
+    
+    return render_template('admin/video_settings.html', 
+                         active_video=active_video, 
+                         all_videos=all_videos)
+
+@app.route('/admin/site-settings', methods=['GET', 'POST'])
+@login_required
+def admin_site_settings():
+    if request.method == 'POST':
+        gemini_api_key = request.form.get('gemini_api_key')
+        
+        # Update or create Gemini API key setting
+        setting = SiteSettings.query.filter_by(setting_name='gemini_api_key').first()
+        if not setting:
+            setting = SiteSettings(setting_name='gemini_api_key', setting_value=gemini_api_key)
+            db.session.add(setting)
+        else:
+            setting.setting_value = gemini_api_key
+        
+        db.session.commit()
+        flash('Site settings updated successfully!', 'success')
+        return redirect(url_for('admin_site_settings'))
+    
+    gemini_setting = SiteSettings.query.filter_by(setting_name='gemini_api_key').first()
+    
+    return render_template('admin/site_settings.html', 
+                         gemini_api_key=gemini_setting.setting_value if gemini_setting else '')
+
+@app.route('/admin/activate-video/<int:video_id>')
+@login_required
+def activate_video(video_id):
+    # Deactivate all videos
+    VideoSettings.query.update({'is_active': False})
+    
+    # Activate selected video
+    video = VideoSettings.query.get_or_404(video_id)
+    video.is_active = True
+    db.session.commit()
+    
+    flash(f'Video "{video.video_title}" activated!', 'success')
+    return redirect(url_for('admin_video_settings'))
+
+@app.route('/admin/delete-video/<int:video_id>')
+@login_required
+def delete_video(video_id):
+    video = VideoSettings.query.get_or_404(video_id)
+    
+    # Delete file from filesystem
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'background_videos', video.video_filename)
+    if os.path.exists(file_path):
+        os.remove(file_path)
+    
+    db.session.delete(video)
+    db.session.commit()
+    
+    flash('Video deleted successfully!', 'success')
+    return redirect(url_for('admin_video_settings'))
+
 # File serving routes
 @app.route('/uploads/<path:filename>')
 def uploaded_file(filename):
@@ -501,6 +711,10 @@ def papers_file(filename):
 @app.route('/uploads/videos/<filename>')
 def videos_file(filename):
     return send_from_directory(os.path.join(app.config['UPLOAD_FOLDER'], 'videos'), filename)
+
+@app.route('/uploads/background_videos/<filename>')
+def background_video_file(filename):
+    return send_from_directory(os.path.join(app.config['UPLOAD_FOLDER'], 'background_videos'), filename)
 
 @app.route('/elearning/view/<int:resource_id>')
 def view_elearning_resource(resource_id):
@@ -577,6 +791,28 @@ with app.app_context():
         db.session.add(default_content)
         db.session.commit()
         print("Default school content created")
+    
+    # Create default theme setting if it doesn't exist
+    default_theme = ThemeSettings.query.first()
+    if not default_theme:
+        default_theme = ThemeSettings(
+            theme_name='blue',
+            is_active=True
+        )
+        db.session.add(default_theme)
+        db.session.commit()
+        print("Default theme setting created")
+    
+    # Create default Gemini API key setting if it doesn't exist
+    gemini_setting = SiteSettings.query.filter_by(setting_name='gemini_api_key').first()
+    if not gemini_setting:
+        gemini_setting = SiteSettings(
+            setting_name='gemini_api_key',
+            setting_value=''
+        )
+        db.session.add(gemini_setting)
+        db.session.commit()
+        print("Default Gemini API key setting created")
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

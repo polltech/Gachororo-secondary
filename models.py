@@ -73,3 +73,31 @@ class ELearningResource(db.Model):
     
     def __init__(self, **kwargs):
         super(ELearningResource, self).__init__(**kwargs)
+
+class SiteSettings(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    setting_name = db.Column(db.String(100), unique=True, nullable=False)
+    setting_value = db.Column(db.Text)
+    date_updated = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    def __init__(self, **kwargs):
+        super(SiteSettings, self).__init__(**kwargs)
+
+class ThemeSettings(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    theme_name = db.Column(db.String(50), nullable=False, default='blue')  # 'blue', 'red', 'gray'
+    is_active = db.Column(db.Boolean, default=True)
+    date_updated = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    def __init__(self, **kwargs):
+        super(ThemeSettings, self).__init__(**kwargs)
+
+class VideoSettings(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    video_filename = db.Column(db.String(200))
+    video_title = db.Column(db.String(200))
+    is_active = db.Column(db.Boolean, default=True)
+    date_uploaded = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    def __init__(self, **kwargs):
+        super(VideoSettings, self).__init__(**kwargs)

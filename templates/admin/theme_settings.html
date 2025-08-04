@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Theme Settings - Admin{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="fas fa-palette me-2"></i>Theme Settings</h2>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-1"></i>Back to Dashboard
+                </a>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Choose Website Theme</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="row">
+                            {% for theme in themes %}
+                            <div class="col-md-4 mb-3">
+                                <div class="card theme-preview {% if current_theme and current_theme.theme_name == theme %}border-primary{% endif %}">
+                                    <div class="card-body text-center">
+                                        <div class="theme-sample mb-3" data-theme="{{ theme }}">
+                                            {% if theme == 'blue' %}
+                                                <div style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); height: 80px; border-radius: 8px; margin-bottom: 10px;"></div>
+                                                <h6 class="text-primary">Blue Theme</h6>
+                                                <small class="text-muted">Classic blue with professional look</small>
+                                            {% elif theme == 'red' %}
+                                                <div style="background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%); height: 80px; border-radius: 8px; margin-bottom: 10px;"></div>
+                                                <h6 class="text-danger">Red Theme</h6>
+                                                <small class="text-muted">Vibrant red for energy and enthusiasm</small>
+                                            {% elif theme == 'gray' %}
+                                                <div style="background: linear-gradient(135deg, #4b5563 0%, #6b7280 100%); height: 80px; border-radius: 8px; margin-bottom: 10px;"></div>
+                                                <h6 class="text-secondary">Gray Theme</h6>
+                                                <small class="text-muted">Elegant gray for modern sophistication</small>
+                                            {% endif %}
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="theme" value="{{ theme }}" 
+                                                   {% if current_theme and current_theme.theme_name == theme %}checked{% endif %}>
+                                            <label class="form-check-label">
+                                                Select {{ theme.title() }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save me-2"></i>Apply Theme
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {% if current_theme %}
+            <div class="alert alert-info mt-4">
+                <i class="fas fa-info-circle me-2"></i>
+                Current active theme: <strong>{{ current_theme.theme_name.title() }}</strong>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

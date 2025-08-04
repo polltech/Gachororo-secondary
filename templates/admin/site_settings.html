@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Site Settings - Admin{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="fas fa-cogs me-2"></i>Site Settings</h2>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-1"></i>Back to Dashboard
+                </a>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">API Configuration</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="mb-4">
+                            <label for="gemini_api_key" class="form-label">
+                                <i class="fas fa-robot me-2"></i>Gemini API Key
+                            </label>
+                            <input type="password" class="form-control" id="gemini_api_key" name="gemini_api_key" 
+                                   value="{{ gemini_api_key or '' }}" placeholder="Enter your Gemini API key">
+                            <small class="text-muted">
+                                This key is required for the AI Tutor functionality. 
+                                <a href="https://makersuite.google.com/app/apikey" target="_blank">Get your API key here</a>
+                            </small>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>API Key Information:</strong>
+                            <ul class="mb-0 mt-2">
+                                <li>The Gemini API key enables the AI Tutor feature for students</li>
+                                <li>Students can ask educational questions and get AI-powered responses</li>
+                                <li>The AI can also analyze images submitted by students</li>
+                                <li>Your API key is stored securely and never shared</li>
+                            </ul>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Save Settings
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- API Status -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Service Status</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center">
+                                {% if gemini_api_key %}
+                                    <i class="fas fa-check-circle text-success me-2"></i>
+                                    <span>AI Tutor: <strong class="text-success">Configured</strong></span>
+                                {% else %}
+                                    <i class="fas fa-exclamation-circle text-warning me-2"></i>
+                                    <span>AI Tutor: <strong class="text-warning">Not Configured</strong></span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,294 @@
+{% extends "base.html" %}
+
+{% block title %}AI Tutor - Gachororo Secondary School{% endblock %}
+
+{% block head %}
+<style>
+    .chat-container {
+        max-height: 70vh;
+        overflow-y: auto;
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        padding: 20px;
+        background-color: var(--school-bg-light);
+    }
+    
+    .message {
+        margin-bottom: 15px;
+        padding: 12px 16px;
+        border-radius: 12px;
+        max-width: 80%;
+    }
+    
+    .user-message {
+        background-color: var(--school-primary);
+        color: white;
+        margin-left: auto;
+        text-align: right;
+    }
+    
+    .ai-message {
+        background-color: #f8f9fa;
+        color: #333;
+        border: 1px solid #e9ecef;
+    }
+    
+    .typing-indicator {
+        display: none;
+        padding: 10px;
+        font-style: italic;
+        color: #666;
+    }
+    
+    .image-preview {
+        max-width: 200px;
+        max-height: 200px;
+        border-radius: 8px;
+        margin-top: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="py-minimal">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="text-center mb-4">
+                    <h2><i class="fas fa-robot me-2"></i>AI Tutor</h2>
+                    <p class="lead-compact">Ask questions about your studies and get instant help from our AI tutor!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <!-- Chat Container -->
+                <div class="chat-container mb-4" id="chat-container">
+                    <div class="text-center text-muted">
+                        <i class="fas fa-graduation-cap fa-3x mb-3"></i>
+                        <p>Welcome to your AI Study Assistant!</p>
+                        <p>Ask me questions about Mathematics, Science, English, History, and more. You can also upload images for analysis.</p>
+                    </div>
+                </div>
+
+                <!-- Input Form -->
+                <div class="card">
+                    <div class="card-body">
+                        <form id="question-form" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label for="question" class="form-label">Your Question</label>
+                                <textarea class="form-control" id="question" name="question" rows="3" 
+                                          placeholder="Ask me about any school subject..."></textarea>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="image" class="form-label">Upload Image (Optional)</label>
+                                <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                                <small class="text-muted">Upload diagrams, problems, or any educational content for analysis</small>
+                                <div id="image-preview-container"></div>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <button type="submit" class="btn btn-primary" id="submit-btn">
+                                    <i class="fas fa-paper-plane me-2"></i>Ask AI Tutor
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary" id="clear-chat">
+                                    <i class="fas fa-eraser me-2"></i>Clear Chat
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Subject Suggestions -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h6 class="card-title mb-0">Quick Subject Access</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-outline-primary btn-sm subject-btn" data-subject="Mathematics">
+                                        <i class="fas fa-calculator me-2"></i>Mathematics
+                                    </button>
+                                    <button class="btn btn-outline-success btn-sm subject-btn" data-subject="Science">
+                                        <i class="fas fa-flask me-2"></i>Science
+                                    </button>
+                                    <button class="btn btn-outline-info btn-sm subject-btn" data-subject="English">
+                                        <i class="fas fa-book me-2"></i>English
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-outline-warning btn-sm subject-btn" data-subject="History">
+                                        <i class="fas fa-landmark me-2"></i>History
+                                    </button>
+                                    <button class="btn btn-outline-secondary btn-sm subject-btn" data-subject="Geography">
+                                        <i class="fas fa-globe me-2"></i>Geography
+                                    </button>
+                                    <button class="btn btn-outline-danger btn-sm subject-btn" data-subject="Kiswahili">
+                                        <i class="fas fa-language me-2"></i>Kiswahili
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('question-form');
+    const chatContainer = document.getElementById('chat-container');
+    const questionInput = document.getElementById('question');
+    const imageInput = document.getElementById('image');
+    const submitBtn = document.getElementById('submit-btn');
+    const clearBtn = document.getElementById('clear-chat');
+    const imagePreviewContainer = document.getElementById('image-preview-container');
+
+    // Handle image preview
+    imageInput.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                imagePreviewContainer.innerHTML = `
+                    <div class="mt-2">
+                        <img src="${e.target.result}" class="image-preview" alt="Preview">
+                        <button type="button" class="btn btn-sm btn-outline-danger ms-2" onclick="clearImagePreview()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Subject buttons
+    document.querySelectorAll('.subject-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const subject = this.dataset.subject;
+            questionInput.value = `I need help with ${subject}. `;
+            questionInput.focus();
+        });
+    });
+
+    // Clear chat
+    clearBtn.addEventListener('click', function() {
+        chatContainer.innerHTML = `
+            <div class="text-center text-muted">
+                <i class="fas fa-graduation-cap fa-3x mb-3"></i>
+                <p>Welcome to your AI Study Assistant!</p>
+                <p>Ask me questions about Mathematics, Science, English, History, and more. You can also upload images for analysis.</p>
+            </div>
+        `;
+    });
+
+    // Handle form submission
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const question = questionInput.value.trim();
+        if (!question) {
+            alert('Please enter a question.');
+            return;
+        }
+
+        // Add user message to chat
+        addMessage(question, 'user', imageInput.files[0]);
+        
+        // Show typing indicator
+        showTypingIndicator();
+        
+        // Disable submit button
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Thinking...';
+
+        // Submit to server
+        const formData = new FormData(form);
+        
+        fetch('{{ url_for("ai_tutor") }}', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            hideTypingIndicator();
+            
+            if (data.error) {
+                addMessage(`Error: ${data.error}`, 'ai');
+            } else {
+                addMessage(data.response, 'ai');
+            }
+        })
+        .catch(error => {
+            hideTypingIndicator();
+            addMessage(`Error: ${error.message}`, 'ai');
+        })
+        .finally(() => {
+            // Reset form
+            questionInput.value = '';
+            imageInput.value = '';
+            clearImagePreview();
+            
+            // Re-enable submit button
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Ask AI Tutor';
+        });
+    });
+
+    function addMessage(content, sender, imageFile = null) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${sender}-message`;
+        
+        let imageHtml = '';
+        if (imageFile && sender === 'user') {
+            const imageUrl = URL.createObjectURL(imageFile);
+            imageHtml = `<div><img src="${imageUrl}" class="image-preview" alt="Uploaded image"></div>`;
+        }
+        
+        messageDiv.innerHTML = `
+            ${imageHtml}
+            <div>${content}</div>
+        `;
+        
+        // Remove welcome message if it exists
+        const welcomeMsg = chatContainer.querySelector('.text-center.text-muted');
+        if (welcomeMsg) {
+            welcomeMsg.remove();
+        }
+        
+        chatContainer.appendChild(messageDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    function showTypingIndicator() {
+        const indicator = document.createElement('div');
+        indicator.className = 'typing-indicator';
+        indicator.innerHTML = '<i class="fas fa-ellipsis-h"></i> AI is thinking...';
+        chatContainer.appendChild(indicator);
+        indicator.style.display = 'block';
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    function hideTypingIndicator() {
+        const indicator = chatContainer.querySelector('.typing-indicator');
+        if (indicator) {
+            indicator.remove();
+        }
+    }
+
+    window.clearImagePreview = function() {
+        imagePreviewContainer.innerHTML = '';
+        imageInput.value = '';
+    };
+});
+</script>
+{% endblock %}

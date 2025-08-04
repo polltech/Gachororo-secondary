@@ -181,9 +181,27 @@
                                 </a>
                             </div>
                             <div class="col-md-4 mb-3">
+                                <a href="{{ url_for('admin_theme_settings') }}" class="btn btn-outline-info w-100 quick-action-btn">
+                                    <i class="fas fa-palette fa-2x mb-2 d-block"></i>
+                                    Theme Settings
+                                </a>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <a href="{{ url_for('admin_video_settings') }}" class="btn btn-outline-warning w-100 quick-action-btn">
+                                    <i class="fas fa-video fa-2x mb-2 d-block"></i>
+                                    Video Background
+                                </a>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <a href="{{ url_for('admin_site_settings') }}" class="btn btn-outline-success w-100 quick-action-btn">
+                                    <i class="fas fa-robot fa-2x mb-2 d-block"></i>
+                                    AI Settings
+                                </a>
+                            </div>
+                            <div class="col-md-4 mb-3">
                                 <a href="{{ url_for('admin_settings') }}" class="btn btn-outline-secondary w-100 quick-action-btn">
                                     <i class="fas fa-cog fa-2x mb-2 d-block"></i>
-                                    Settings
+                                    Admin Settings
                                 </a>
                             </div>
                         </div>
@@ -263,6 +281,9 @@
                                     <li><a href="{{ url_for('elearning') }}" target="_blank" class="text-decoration-none">
                                         <i class="fas fa-book-open me-2"></i>E-Learning
                                     </a></li>
+                                    <li><a href="{{ url_for('ai_tutor') }}" target="_blank" class="text-decoration-none">
+                                        <i class="fas fa-robot me-2"></i>AI Tutor
+                                    </a></li>
                                     <li><a href="{{ url_for('contact') }}" target="_blank" class="text-decoration-none">
                                         <i class="fas fa-envelope me-2"></i>Contact
                                     </a></li>
@@ -285,6 +306,15 @@
                                     </a></li>
                                     <li><a href="{{ url_for('manage_elearning') }}" class="text-decoration-none">
                                         <i class="fas fa-book-open me-2"></i>E-Learning Resources
+                                    </a></li>
+                                    <li><a href="{{ url_for('admin_theme_settings') }}" class="text-decoration-none">
+                                        <i class="fas fa-palette me-2"></i>Theme Settings
+                                    </a></li>
+                                    <li><a href="{{ url_for('admin_video_settings') }}" class="text-decoration-none">
+                                        <i class="fas fa-video me-2"></i>Video Settings
+                                    </a></li>
+                                    <li><a href="{{ url_for('admin_site_settings') }}" class="text-decoration-none">
+                                        <i class="fas fa-robot me-2"></i>AI Settings
                                     </a></li>
                                     <li><a href="{{ url_for('admin_settings') }}" class="text-decoration-none">
                                         <i class="fas fa-cog me-2"></i>Admin Settings

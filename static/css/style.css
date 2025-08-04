@@ -12,17 +12,50 @@
     --light-color: #f8fafc;
     --dark-color: #1e293b;
     
-    /* School Brand Colors */
+    /* School Brand Colors - Default Blue Theme */
     --school-primary: #1e40af;
     --school-secondary: #059669;
     --school-accent: #f59e0b;
     --school-gradient: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+    --school-bg-light: #eff6ff;
     
     /* Typography */
     --font-family-primary: 'Inter', 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
     --font-family-heading: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
     --font-size-base: 0.925rem;
     --line-height-base: 1.5;
+}
+
+/* Theme Variations */
+[data-theme="red"] {
+    --school-primary: #dc2626;
+    --school-secondary: #ef4444;
+    --school-accent: #fbbf24;
+    --school-gradient: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+    --school-bg-light: #fef2f2;
+    --primary-color: #dc2626;
+    --primary-dark: #b91c1c;
+}
+
+[data-theme="gray"] {
+    --school-primary: #4b5563;
+    --school-secondary: #6b7280;
+    --school-accent: #d97706;
+    --school-gradient: linear-gradient(135deg, #4b5563 0%, #6b7280 100%);
+    --school-bg-light: #f9fafb;
+    --primary-color: #4b5563;
+    --primary-dark: #374151;
+}
+
+[data-theme="blue"] {
+    --school-primary: #1e40af;
+    --school-secondary: #059669;
+    --school-accent: #f59e0b;
+    --school-gradient: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+    --school-bg-light: #eff6ff;
+    --primary-color: #2563eb;
+    --primary-dark: #1d4ed8;
+}
     
     /* Shadows */
     --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
@@ -579,6 +612,48 @@ footer::before {
     font-size: 1.1rem !important;
     line-height: 1.4 !important;
     margin-bottom: 1rem !important;
+    font-weight: 500 !important;
+}
+
+/* Enhanced Typography */
+.navbar-brand {
+    font-family: var(--font-family-heading) !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.02em !important;
+}
+
+.card-title {
+    font-family: var(--font-family-heading) !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.01em !important;
+}
+
+.btn {
+    font-family: var(--font-family-primary) !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.01em !important;
+}
+
+/* Improved text hierarchy */
+.text-enhanced {
+    font-family: var(--font-family-primary) !important;
+    line-height: 1.6 !important;
+    color: var(--dark-color) !important;
+}
+
+/* Better form typography */
+.form-label {
+    font-family: var(--font-family-heading) !important;
+    font-weight: 600 !important;
+    font-size: 0.9rem !important;
+    letter-spacing: 0.005em !important;
+}
+
+/* Enhanced navigation typography */
+.nav-link {
+    font-family: var(--font-family-primary) !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.01em !important;
 }
 
 /* Utility Classes */
@@ -621,4 +696,39 @@ footer::before {
 .hero-section,
 .page-header {
     will-change: background-position;
+}
+
+/* Video Background */
+.video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    object-fit: cover;
+    opacity: 0.15;
+}
+
+.video-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.1);
+    z-index: -1;
+}
+
+/* Theme-specific background adjustments */
+[data-theme="red"] .hero-section {
+    background: var(--school-gradient);
+}
+
+[data-theme="gray"] .hero-section {
+    background: var(--school-gradient);
+}
+
+[data-theme="blue"] .hero-section {
+    background: var(--school-gradient);
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="{{ current_theme }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,6 +17,13 @@
     {% block head %}{% endblock %}
 </head>
 <body>
+    <!-- Video Background -->
+    {% if active_video and active_video.video_filename %}
+        <video class="video-background" autoplay muted loop>
+            <source src="{{ url_for('background_video_file', filename=active_video.video_filename) }}" type="video/mp4">
+        </video>
+        <div class="video-overlay"></div>
+    {% endif %}
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
         <div class="container">
@@ -48,6 +55,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('elearning') }}">E-Learning</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('ai_tutor') }}">AI Tutor</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('contact') }}">Contact</a>
@@ -101,12 +111,7 @@
             <div class="row">
                 <div class="col-md-4 mb-3">
                     <h5 class="fw-bold mb-2">Gachororo Secondary School</h5>
-                    <p class="text-muted">Committed to academic excellence and character development for all our students.</p>
-                    <div class="social-links">
-                        <a href="#" class="text-light me-3"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-light me-3"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-light me-3"><i class="fab fa-instagram"></i></a>
-                    </div>
+                    <p class="text-muted mb-0">Committed to academic excellence and character development for all our students.</p>
                 </div>
                 
                 <div class="col-md-4 mb-3">
