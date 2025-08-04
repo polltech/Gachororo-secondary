@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Achievements - Admin Dashboard{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="admin-header bg-primary text-white py-4">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="h3 mb-1">
+                    <i class="fas fa-trophy me-2"></i>
+                    Manage Achievements
+                </h1>
+                <p class="mb-0">Update your school's achievements and accomplishments</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <a href="{{ url_for('dashboard') }}" class="btn btn-light">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Achievements Form -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0">
+                            <i class="fas fa-edit me-2"></i>
+                            School Achievements
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                            <div class="row">
+                                <div class="col-12 mb-4">
+                                    <label for="achievements" class="form-label fw-bold">Achievements & Accomplishments</label>
+                                    <textarea class="form-control" id="achievements" name="achievements" 
+                                              rows="12" placeholder="List your school's achievements, awards, recognition, and accomplishments...">{{ content.achievements or '' }}</textarea>
+                                    <div class="form-text">List major achievements, awards, academic performance, sports victories, and other accomplishments. Use bullet points or paragraphs to organize the content.</div>
+                                </div>
+                                
+                                <div class="col-12 text-center">
+                                    <button type="submit" class="btn btn-warning btn-lg px-5">
+                                        <i class="fas fa-save me-2"></i>Update Achievements
+                                    </button>
+                                    <a href="{{ url_for('achievements') }}" class="btn btn-outline-primary btn-lg px-5 ms-3" target="_blank">
+                                        <i class="fas fa-eye me-2"></i>Preview Achievements Page
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Achievement Categories -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-list me-2"></i>
+                            Achievement Categories to Consider
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <h6 class="text-primary">
+                                    <i class="fas fa-graduation-cap me-2"></i>Academic Excellence
+                                </h6>
+                                <ul class="list-unstyled text-muted small">
+                                    <li>• KCSE performance and rankings</li>
+                                    <li>• University admission rates</li>
+                                    <li>• Academic competition wins</li>
+                                    <li>• Scholarship recipients</li>
+                                    <li>• Subject-specific achievements</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="col-md-6 mb-4">
+                                <h6 class="text-success">
+                                    <i class="fas fa-running me-2"></i>Sports & Co-curricular
+                                </h6>
+                                <ul class="list-unstyled text-muted small">
+                                    <li>• Regional and national sports wins</li>
+                                    <li>• Drama and music festivals</li>
+                                    <li>• Science and technology fairs</li>
+                                    <li>• Club achievements</li>
+                                    <li>• Community service projects</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="col-md-6 mb-4">
+                                <h6 class="text-warning">
+                                    <i class="fas fa-award me-2"></i>Recognition & Awards
+                                </h6>
+                                <ul class="list-unstyled text-muted small">
+                                    <li>• Government recognition</li>
+                                    <li>• Education ministry awards</li>
+                                    <li>• Community acknowledgments</li>
+                                    <li>• Quality assurance certifications</li>
+                                    <li>• Partnership achievements</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="col-md-6 mb-4">
+                                <h6 class="text-info">
+                                    <i class="fas fa-building me-2"></i>Infrastructure & Development
+                                </h6>
+                                <ul class="list-unstyled text-muted small">
+                                    <li>• New facility completions</li>
+                                    <li>• Technology upgrades</li>
+                                    <li>• Library expansions</li>
+                                    <li>• Laboratory improvements</li>
+                                    <li>• Environmental initiatives</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-info mt-3">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Tip:</strong> Include specific years, statistics, and names where possible. This makes achievements more credible and impressive to visitors.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

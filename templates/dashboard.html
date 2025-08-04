@@ -139,31 +139,43 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-4 mb-3">
-                                <a href="{{ url_for('manage_content') }}" class="btn btn-outline-primary w-100 quick-action-btn">
-                                    <i class="fas fa-edit fa-2x mb-2 d-block"></i>
-                                    Edit Content
+                                <a href="{{ url_for('manage_home') }}" class="btn btn-outline-primary w-100 quick-action-btn">
+                                    <i class="fas fa-home fa-2x mb-2 d-block"></i>
+                                    Edit Homepage
                                 </a>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <a href="{{ url_for('manage_gallery') }}" class="btn btn-outline-warning w-100 quick-action-btn">
+                                <a href="{{ url_for('manage_achievements') }}" class="btn btn-outline-warning w-100 quick-action-btn">
+                                    <i class="fas fa-trophy fa-2x mb-2 d-block"></i>
+                                    Edit Achievements
+                                </a>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <a href="{{ url_for('manage_content') }}" class="btn btn-outline-info w-100 quick-action-btn">
+                                    <i class="fas fa-edit fa-2x mb-2 d-block"></i>
+                                    Contact Info
+                                </a>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <a href="{{ url_for('manage_gallery') }}" class="btn btn-outline-success w-100 quick-action-btn">
                                     <i class="fas fa-images fa-2x mb-2 d-block"></i>
                                     Manage Gallery
                                 </a>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <a href="{{ url_for('manage_news') }}" class="btn btn-outline-success w-100 quick-action-btn">
+                                <a href="{{ url_for('manage_news') }}" class="btn btn-outline-danger w-100 quick-action-btn">
                                     <i class="fas fa-newspaper fa-2x mb-2 d-block"></i>
-                                    Add News/Event
+                                    News & Events
                                 </a>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <a href="{{ url_for('manage_staff') }}" class="btn btn-outline-info w-100 quick-action-btn">
+                                <a href="{{ url_for('manage_staff') }}" class="btn btn-outline-primary w-100 quick-action-btn">
                                     <i class="fas fa-user-tie fa-2x mb-2 d-block"></i>
                                     Manage Staff
                                 </a>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <a href="{{ url_for('manage_elearning') }}" class="btn btn-outline-danger w-100 quick-action-btn">
+                                <a href="{{ url_for('manage_elearning') }}" class="btn btn-outline-warning w-100 quick-action-btn">
                                     <i class="fas fa-book-open fa-2x mb-2 d-block"></i>
                                     E-Learning
                                 </a>

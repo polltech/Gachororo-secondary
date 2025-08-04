@@ -213,6 +213,46 @@ def manage_content():
     
     return render_template('admin/manage_content.html', content=content)
 
+@app.route('/admin/manage-home', methods=['GET', 'POST'])
+@login_required
+def manage_home():
+    content = SchoolContent.query.first()
+    if not content:
+        content = SchoolContent()
+        db.session.add(content)
+        db.session.commit()
+    
+    if request.method == 'POST':
+        content.principal_message = request.form.get('principal_message', '')
+        content.mission = request.form.get('mission', '')
+        content.vision = request.form.get('vision', '')
+        content.motto = request.form.get('motto', '')
+        content.history = request.form.get('history', '')
+        
+        db.session.commit()
+        flash('Home page content updated successfully!', 'success')
+        return redirect(url_for('manage_home'))
+    
+    return render_template('admin/manage_home.html', content=content)
+
+@app.route('/admin/manage-achievements', methods=['GET', 'POST'])
+@login_required
+def manage_achievements():
+    content = SchoolContent.query.first()
+    if not content:
+        content = SchoolContent()
+        db.session.add(content)
+        db.session.commit()
+    
+    if request.method == 'POST':
+        content.achievements = request.form.get('achievements', '')
+        
+        db.session.commit()
+        flash('Achievements updated successfully!', 'success')
+        return redirect(url_for('manage_achievements'))
+    
+    return render_template('admin/manage_achievements.html', content=content)
+
 @app.route('/admin/manage-gallery', methods=['GET', 'POST'])
 @login_required
 def manage_gallery():
@@ -461,6 +501,47 @@ def papers_file(filename):
 @app.route('/uploads/videos/<filename>')
 def videos_file(filename):
     return send_from_directory(os.path.join(app.config['UPLOAD_FOLDER'], 'videos'), filename)
+
+@app.route('/elearning/view/<int:resource_id>')
+def view_elearning_resource(resource_id):
+    resource = ELearningResource.query.get_or_404(resource_id)
+    if resource.resource_type == 'file' and resource.filename:
+        # Determine file path based on type
+        if allowed_file(resource.filename, 'document'):
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'papers', resource.filename)
+            folder = 'papers'
+        else:
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'videos', resource.filename)
+            folder = 'videos'
+        
+        if os.path.exists(file_path):
+            return send_from_directory(os.path.join(app.config['UPLOAD_FOLDER'], folder), resource.filename)
+    
+    flash('File not found.', 'error')
+    return redirect(url_for('elearning'))
+
+@app.route('/elearning/download/<int:resource_id>')
+def download_elearning_resource(resource_id):
+    resource = ELearningResource.query.get_or_404(resource_id)
+    if resource.resource_type == 'file' and resource.filename:
+        # Determine file path based on type
+        if allowed_file(resource.filename, 'document'):
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'papers', resource.filename)
+            folder = 'papers'
+        else:
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'videos', resource.filename)
+            folder = 'videos'
+        
+        if os.path.exists(file_path):
+            return send_from_directory(
+                os.path.join(app.config['UPLOAD_FOLDER'], folder), 
+                resource.filename, 
+                as_attachment=True,
+                download_name=f"{resource.title}_{resource.filename}"
+            )
+    
+    flash('File not found.', 'error')
+    return redirect(url_for('elearning'))
 
 # Initialize database and create default admin user
 with app.app_context():
