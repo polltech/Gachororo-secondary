@@ -182,8 +182,15 @@
         <div class="row">
             <!-- Categorize staff by position -->
             {% set admin_positions = ['Principal', 'Deputy Principal', 'Head Teacher'] %}
-            {% set teaching_positions = staff_members | selectattr('position', 'match', '.*Teacher.*') | list %}
-            {% set other_staff = staff_members | rejectattr('position', 'in', admin_positions) | rejectattr('position', 'match', '.*Teacher.*') | list %}
+            {% set teaching_positions = [] %}
+            {% set other_staff = [] %}
+            {% for staff in staff_members %}
+                {% if 'Teacher' in staff.position %}
+                    {% set _ = teaching_positions.append(staff) %}
+                {% elif staff.position not in admin_positions %}
+                    {% set _ = other_staff.append(staff) %}
+                {% endif %}
+            {% endfor %}
             
             {% if staff_members | selectattr('position', 'in', admin_positions) | list %}
                 <div class="col-md-4 mb-4">

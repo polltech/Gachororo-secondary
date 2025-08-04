@@ -149,7 +149,7 @@ def login():
         
         user = User.query.filter_by(email=email).first()
         
-        if user and check_password_hash(user.password_hash, password):
+        if user and user.password_hash and password and check_password_hash(user.password_hash, password):
             login_user(user)
             flash('Login successful!', 'success')
             return redirect(url_for('dashboard'))
@@ -225,7 +225,7 @@ def manage_gallery():
         title = request.form.get('title', '')
         description = request.form.get('description', '')
         
-        if file and allowed_file(file.filename, 'image'):
+        if file and file.filename and allowed_file(file.filename, 'image'):
             filename = secure_filename(file.filename)
             # Add timestamp to prevent conflicts
             timestamp = datetime.now().strftime('%Y%m%d_%H%M%S_')
@@ -309,7 +309,7 @@ def manage_staff():
         photo_filename = None
         if 'photo' in request.files:
             file = request.files['photo']
-            if file and allowed_file(file.filename, 'image'):
+            if file and file.filename and allowed_file(file.filename, 'image'):
                 filename = secure_filename(file.filename)
                 timestamp = datetime.now().strftime('%Y%m%d_%H%M%S_')
                 photo_filename = timestamp + filename
@@ -364,7 +364,7 @@ def manage_elearning():
         if resource_type == 'file':
             if 'file' in request.files:
                 file = request.files['file']
-                if file and (allowed_file(file.filename, 'document') or allowed_file(file.filename, 'video')):
+                if file and file.filename and (allowed_file(file.filename, 'document') or allowed_file(file.filename, 'video')):
                     filename = secure_filename(file.filename)
                     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S_')
                     filename = timestamp + filename
@@ -431,7 +431,7 @@ def admin_settings():
         current_password = request.form.get('current_password')
         new_password = request.form.get('new_password')
         
-        if not check_password_hash(current_user.password_hash, current_password):
+        if not current_user.password_hash or not current_password or not check_password_hash(current_user.password_hash, current_password):
             flash('Current password is incorrect.', 'error')
             return redirect(url_for('admin_settings'))
         

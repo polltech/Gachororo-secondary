@@ -7,6 +7,9 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(256))
+    
+    def __init__(self, **kwargs):
+        super(User, self).__init__(**kwargs)
 
 class SchoolContent(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -21,6 +24,9 @@ class SchoolContent(db.Model):
     contact_phone = db.Column(db.String(50))
     contact_email = db.Column(db.String(120))
     date_updated = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    def __init__(self, **kwargs):
+        super(SchoolContent, self).__init__(**kwargs)
 
 class NewsEvent(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -28,6 +34,9 @@ class NewsEvent(db.Model):
     content = db.Column(db.Text, nullable=False)
     type = db.Column(db.String(20), nullable=False)  # 'news' or 'event'
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    def __init__(self, **kwargs):
+        super(NewsEvent, self).__init__(**kwargs)
 
 class StaffMember(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -37,6 +46,9 @@ class StaffMember(db.Model):
     subjects = db.Column(db.String(500))
     photo_filename = db.Column(db.String(200))
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    def __init__(self, **kwargs):
+        super(StaffMember, self).__init__(**kwargs)
 
 class GalleryImage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -44,6 +56,9 @@ class GalleryImage(db.Model):
     title = db.Column(db.String(200))
     description = db.Column(db.Text)
     date_uploaded = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    def __init__(self, **kwargs):
+        super(GalleryImage, self).__init__(**kwargs)
 
 class ELearningResource(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -55,3 +70,6 @@ class ELearningResource(db.Model):
     filename = db.Column(db.String(200))  # For uploaded files
     youtube_url = db.Column(db.String(500))  # For YouTube videos
     date_uploaded = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    def __init__(self, **kwargs):
+        super(ELearningResource, self).__init__(**kwargs)
