@@ -19,10 +19,10 @@
     --school-gradient: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
     
     /* Typography */
-    --font-family-primary: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-family-heading: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-size-base: 1rem;
-    --line-height-base: 1.7;
+    --font-family-primary: 'Inter', 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    --font-family-heading: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    --font-size-base: 0.925rem;
+    --line-height-base: 1.5;
     
     /* Shadows */
     --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
@@ -48,23 +48,25 @@ body {
     background-color: #ffffff;
     overflow-x: hidden;
     font-weight: 400;
+    font-size: var(--font-size-base);
+    letter-spacing: -0.005em;
 }
 
 /* Typography Enhancements */
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-family-heading);
     font-weight: 700;
-    line-height: 1.3;
-    margin-bottom: 1.25rem;
-    letter-spacing: -0.025em;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
 }
 
-h1 { font-size: 2.5rem; font-weight: 800; }
-h2 { font-size: 2rem; font-weight: 700; }
-h3 { font-size: 1.75rem; font-weight: 600; }
-h4 { font-size: 1.5rem; font-weight: 600; }
-h5 { font-size: 1.25rem; font-weight: 600; }
-h6 { font-size: 1.125rem; font-weight: 600; }
+h1 { font-size: 2.25rem; font-weight: 800; }
+h2 { font-size: 1.875rem; font-weight: 700; }
+h3 { font-size: 1.5rem; font-weight: 600; }
+h4 { font-size: 1.25rem; font-weight: 600; }
+h5 { font-size: 1.1rem; font-weight: 600; }
+h6 { font-size: 1rem; font-weight: 600; }
 
 .display-1, .display-2, .display-3, .display-4 {
     font-weight: 700;
@@ -153,7 +155,7 @@ h6 { font-size: 1.125rem; font-weight: 600; }
     border: none;
     box-shadow: var(--shadow-sm);
     transition: var(--transition-base);
-    border-radius: 12px;
+    border-radius: 8px;
     overflow: hidden;
 }
 
@@ -165,21 +167,21 @@ h6 { font-size: 1.125rem; font-weight: 600; }
 .card-header {
     border-bottom: none;
     font-weight: 600;
-    padding: 1.25rem 1.5rem;
+    padding: 1rem 1.25rem;
 }
 
 .card-body {
-    padding: 1.5rem;
+    padding: 1rem 1.25rem;
 }
 
 /* Value Cards */
 .value-card {
-    padding: 2rem 1rem;
+    padding: 1.5rem 1rem;
     text-align: center;
     transition: var(--transition-base);
     height: 100%;
     border: 1px solid rgba(0,0,0,0.05);
-    border-radius: 12px;
+    border-radius: 8px;
 }
 
 .value-card:hover {
@@ -221,11 +223,13 @@ h6 { font-size: 1.125rem; font-weight: 600; }
 /* Button Enhancements */
 .btn {
     font-weight: 500;
-    border-radius: 8px;
+    border-radius: 6px;
     transition: var(--transition-base);
     text-decoration: none;
     position: relative;
     overflow: hidden;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
 }
 
 .btn:hover {
@@ -551,6 +555,32 @@ footer::before {
     color: white;
 }
 
+/* Minimal Spacing Utilities */
+.py-minimal { padding-top: 2rem !important; padding-bottom: 2rem !important; }
+.py-tight { padding-top: 1.5rem !important; padding-bottom: 1.5rem !important; }
+.mb-minimal { margin-bottom: 0.5rem !important; }
+.mt-minimal { margin-top: 0.5rem !important; }
+.gap-minimal { gap: 0.75rem !important; }
+
+/* Compact Components */
+.card-compact { 
+    border-radius: 6px !important;
+}
+.card-compact .card-body {
+    padding: 0.875rem 1rem !important;
+}
+.btn-compact {
+    padding: 0.4rem 0.875rem !important;
+    font-size: 0.85rem !important;
+}
+
+/* Typography Improvements */
+.lead-compact {
+    font-size: 1.1rem !important;
+    line-height: 1.4 !important;
+    margin-bottom: 1rem !important;
+}
+
 /* Utility Classes */
 .text-school-primary { color: var(--school-primary) !important; }
 .text-school-secondary { color: var(--school-secondary) !important; }
@@ -561,7 +591,7 @@ footer::before {
 .bg-school-accent { background-color: var(--school-accent) !important; }
 
 .shadow-custom { box-shadow: var(--shadow-lg) !important; }
-.rounded-custom { border-radius: 12px !important; }
+.rounded-custom { border-radius: 8px !important; }
 
 .animate-fade-in {
     animation: fadeIn 0.6s ease-out;
