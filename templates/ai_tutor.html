@@ -1,50 +1,47 @@
 {% extends "base.html" %}
-
 {% block title %}AI Tutor - Gachororo Secondary School{% endblock %}
-
 {% block head %}
 <style>
+    /* Enhanced chat container styling */
     .chat-container {
-        max-height: 70vh;
+        max-height: 600px;
         overflow-y: auto;
-        border: 1px solid #e0e0e0;
+        border: 1px solid #dee2e6;
         border-radius: 15px;
         padding: 20px;
-        background: linear-gradient(145deg, #ffffff 0%, var(--school-bg-light) 100%);
+        background-color: #f8f9fa;
+        margin-bottom: 20px;
         box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
     }
-    
+    /* Message styling */
     .message {
         margin-bottom: 20px;
-        max-width: 85%;
+        max-width: 90%;
         position: relative;
-        animation: messageSlideIn 0.3s ease-out;
+        animation: fadeIn 0.3s ease-out;
     }
-    
-    @keyframes messageSlideIn {
+    @keyframes fadeIn {
         from { opacity: 0; transform: translateY(10px); }
         to { opacity: 1; transform: translateY(0); }
     }
-    
     .user-message {
         margin-left: auto;
         text-align: right;
     }
-    
     .user-message .message-content {
-        background: linear-gradient(135deg, var(--school-primary) 0%, var(--school-secondary) 100%);
+        background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
         color: white;
         padding: 15px 20px;
         border-radius: 20px 20px 5px 20px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         display: inline-block;
         max-width: 100%;
+        font-weight: 500;
+        font-size: 1rem;
     }
-    
     .ai-message {
         margin-right: auto;
     }
-    
     .ai-message .message-content {
         background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
         color: #2d3748;
@@ -52,58 +49,62 @@
         border-radius: 20px 20px 20px 5px;
         border: 1px solid #e2e8f0;
         box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        line-height: 1.6;
+        line-height: 1.7;
+        font-weight: 400;
+        font-size: 1rem;
     }
-    
+    /* Enhanced step-by-step styling */
     .step-item {
         display: flex;
         align-items: flex-start;
-        margin: 12px 0;
-        padding: 12px;
-        background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
-        border-radius: 10px;
-        border-left: 4px solid var(--school-primary);
+        margin: 15px 0;
+        padding: 15px;
+        background: linear-gradient(135deg, #ebf8ff 0%, #bee3fe 100%);
+        border-radius: 12px;
+        border-left: 4px solid #3182ce;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
-    
     .step-number {
-        background: var(--school-primary);
+        background: #3182ce;
         color: white;
         border-radius: 50%;
-        width: 28px;
-        height: 28px;
+        width: 32px;
+        height: 32px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-weight: 600;
-        font-size: 0.9rem;
-        margin-right: 12px;
+        font-weight: bold;
+        margin-right: 15px;
         flex-shrink: 0;
+        font-size: 1rem;
     }
-    
     .step-content {
         flex: 1;
         font-weight: 500;
+        color: #2d3748;
     }
-    
+    /* Bullet points */
     .bullet-item {
         display: flex;
         align-items: flex-start;
-        margin: 8px 0;
-        padding: 8px 12px;
+        margin: 10px 0;
+        padding: 10px 15px;
+        background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+        border-radius: 10px;
+        border-left: 3px solid #38a169;
     }
-    
     .bullet-icon {
-        color: var(--school-primary);
-        font-size: 0.6rem;
+        color: #38a169;
+        font-size: 1.2rem;
         margin-right: 12px;
-        margin-top: 6px;
+        margin-top: 4px;
         flex-shrink: 0;
     }
-    
     .bullet-content {
         flex: 1;
+        color: #2d3748;
     }
-    
+    /* Mathematical expressions */
     .math-expression {
         background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%);
         color: #234e52;
@@ -111,8 +112,9 @@
         border-radius: 6px;
         font-family: 'Monaco', 'Consolas', monospace;
         border: 1px solid #81e6d9;
+        font-weight: 500;
     }
-    
+    /* Formulas */
     .formula {
         background: linear-gradient(135deg, #fef5e7 0%, #fed7aa 100%);
         color: #9c4221;
@@ -121,44 +123,44 @@
         font-family: 'Monaco', 'Consolas', monospace;
         border: 1px solid #fdba74;
         font-size: 0.95rem;
+        font-weight: 500;
     }
-    
+    /* Fractions */
     .fraction {
         font-family: 'Times New Roman', serif;
         font-size: 1.1rem;
-        color: var(--school-primary);
+        color: #3182ce;
         font-weight: 600;
     }
-    
+    /* Response headers */
     .response-header {
-        color: var(--school-primary);
+        color: #3182ce;
         font-weight: 700;
         margin: 16px 0 8px 0;
         padding-bottom: 4px;
-        border-bottom: 2px solid var(--school-primary);
+        border-bottom: 2px solid #3182ce;
         display: inline-block;
     }
-    
+    /* Paragraphs */
     .paragraph {
         margin: 12px 0;
         line-height: 1.7;
+        color: #2d3748;
     }
-    
+    /* Message timestamps */
     .message-time {
         font-size: 0.75rem;
-        color: #a0aec0;
+        color: #718096;
         margin-top: 8px;
         text-align: right;
     }
-    
     .user-message .message-time {
-        color: rgba(255,255,255,0.7);
+        color: rgba(255,255,255,0.8);
     }
-    
+    /* Message images */
     .message-image {
         margin-bottom: 10px;
     }
-    
     .image-preview {
         max-width: 250px;
         max-height: 250px;
@@ -166,46 +168,181 @@
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         border: 2px solid #e2e8f0;
     }
-    
+    /* Typing indicator */
     .typing-indicator {
         display: none;
         padding: 15px 20px;
         font-style: italic;
-        color: #666;
+        color: #718096;
         background: #f7fafc;
         border-radius: 20px;
         margin: 10px 0;
         animation: pulse 1.5s ease-in-out infinite;
     }
-    
     @keyframes pulse {
         0%, 100% { opacity: 0.7; }
         50% { opacity: 1; }
     }
-    
+    /* Subject buttons */
     .subject-btn {
         transition: all 0.3s ease;
         border-radius: 25px;
         font-weight: 500;
+        margin: 5px;
     }
-    
     .subject-btn:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
-    
+    /* Cards */
     .card {
         border-radius: 15px;
         box-shadow: 0 4px 20px rgba(0,0,0,0.08);
     }
-    
     .card-header {
         border-radius: 15px 15px 0 0 !important;
-        background: linear-gradient(135deg, var(--school-primary) 0%, var(--school-secondary) 100%);
+        background: linear-gradient(135deg, #3182ce 0%, #2b6cb0 100%);
+        color: white;
+    }
+    /* Enhanced content display */
+    .concept-explanation {
+        background: linear-gradient(135deg, #ebf8ff 0%, #bee3fe 100%);
+        border-left: 4px solid #3182ce;
+        padding: 15px;
+        border-radius: 0 10px 10px 0;
+        margin: 15px 0;
+        color: #2d3748;
+    }
+    .problem-solving {
+        background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+        border-left: 4px solid #d69e2e;
+        padding: 15px;
+        border-radius: 0 10px 10px 0;
+        margin: 15px 0;
+        color: #2d3748;
+    }
+    .example-box {
+        background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+        border-left: 4px solid #38a169;
+        padding: 15px;
+        border-radius: 0 10px 10px 0;
+        margin: 15px 0;
+        color: #2d3748;
+    }
+    .tip-note {
+        background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+        border-left: 4px solid #e53e3e;
+        padding: 15px;
+        border-radius: 0 10px 10px 0;
+        margin: 15px 0;
+        color: #2d3748;
+    }
+    .highlight {
+        background-color: #fff3cd;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-weight: 500;
+        color: #2d3748;
+    }
+    .code-block {
+        background: #2d3748;
+        color: #e2e8f0;
+        padding: 15px;
+        border-radius: 8px;
+        font-family: 'Courier New', monospace;
+        margin: 15px 0;
+        overflow-x: auto;
+        border: 1px solid #4a5568;
+    }
+    .step-by-step-guide {
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 15px;
+        margin: 15px 0;
+        background: #f8fafc;
+    }
+    .step-by-step-title {
+        font-weight: 700;
+        color: #3182ce;
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+    .step-by-step-content {
+        margin-left: 20px;
+        color: #2d3748;
+    }
+    /* Fix for dark text issues */
+    .ai-message .message-content * {
+        color: #2d3748 !important;
+    }
+    /* Ensure all text is readable */
+    .ai-message .message-content h1,
+    .ai-message .message-content h2,
+    .ai-message .message-content h3,
+    .ai-message .message-content h4,
+    .ai-message .message-content h5,
+    .ai-message .message-content h6 {
+        color: #3182ce !important;
+        margin-top: 15px;
+        margin-bottom: 10px;
+    }
+    .ai-message .message-content p {
+        color: #2d3748 !important;
+        margin-bottom: 12px;
+    }
+    .ai-message .message-content ul,
+    .ai-message .message-content ol {
+        color: #2d3748 !important;
+        margin-bottom: 12px;
+    }
+    .ai-message .message-content li {
+        color: #2d3748 !important;
+        margin-bottom: 5px;
+    }
+    .ai-message .message-content strong {
+        color: #2d3748 !important;
+    }
+    .ai-message .message-content em {
+        color: #2d3748 !important;
+    }
+    .ai-message .message-content a {
+        color: #3182ce !important;
+    }
+    /* Copy button styling */
+    .copy-button {
+        background: #3182ce;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        margin-left: 10px;
+        transition: background 0.3s;
+        float: right;
+    }
+    .copy-button:hover {
+        background: #2b6cb0;
+    }
+    /* Download button styling */
+    .download-button {
+        background: #38a169;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        margin-left: 10px;
+        transition: background 0.3s;
+        float: right;
+    }
+    .download-button:hover {
+        background: #2f855a;
     }
 </style>
 {% endblock %}
-
 {% block content %}
 <section class="py-minimal">
     <div class="container">
@@ -217,7 +354,6 @@
                 </div>
             </div>
         </div>
-
         <div class="row">
             <div class="col-lg-8 mx-auto">
                 <!-- Chat Container -->
@@ -228,7 +364,6 @@
                         <p>Ask me questions about Mathematics, Science, English, History, and more. You can also upload images for analysis.</p>
                     </div>
                 </div>
-
                 <!-- Input Form -->
                 <div class="card">
                     <div class="card-body">
@@ -238,14 +373,12 @@
                                 <textarea class="form-control" id="question" name="question" rows="3" 
                                           placeholder="Ask me about any school subject..."></textarea>
                             </div>
-                            
                             <div class="mb-3">
                                 <label for="image" class="form-label">Upload Image (Optional)</label>
                                 <input type="file" class="form-control" id="image" name="image" accept="image/*">
                                 <small class="text-muted">Upload diagrams, problems, or any educational content for analysis</small>
                                 <div id="image-preview-container"></div>
                             </div>
-
                             <div class="d-flex justify-content-between align-items-center">
                                 <button type="submit" class="btn btn-primary" id="submit-btn">
                                     <i class="fas fa-paper-plane me-2"></i>Ask AI Tutor
@@ -257,7 +390,6 @@
                         </form>
                     </div>
                 </div>
-
                 <!-- Subject Suggestions -->
                 <div class="card mt-4">
                     <div class="card-header">
@@ -298,7 +430,6 @@
         </div>
     </div>
 </section>
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('question-form');
@@ -351,26 +482,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle form submission
     form.addEventListener('submit', function(e) {
         e.preventDefault();
-        
         const question = questionInput.value.trim();
         if (!question) {
             alert('Please enter a question.');
             return;
         }
-
         // Add user message to chat
         addMessage(question, 'user', imageInput.files[0]);
-        
         // Show typing indicator
         showTypingIndicator();
-        
         // Disable submit button
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Thinking...';
-
         // Submit to server
         const formData = new FormData(form);
-        
         fetch('{{ url_for("ai_tutor") }}', {
             method: 'POST',
             body: formData
@@ -378,11 +503,10 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             hideTypingIndicator();
-            
             if (data.error) {
                 addMessage(`Error: ${data.error}`, 'ai');
             } else {
-                addMessage(data.response, 'ai');
+                addMessage(data.response, 'ai', data);
             }
         })
         .catch(error => {
@@ -394,27 +518,42 @@ document.addEventListener('DOMContentLoaded', function() {
             questionInput.value = '';
             imageInput.value = '';
             clearImagePreview();
-            
             // Re-enable submit button
             submitBtn.disabled = false;
             submitBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Ask AI Tutor';
         });
     });
 
-    function addMessage(content, sender, imageFile = null) {
+    function addMessage(content, sender, imageData = null) {
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${sender}-message`;
-        
         let imageHtml = '';
-        if (imageFile && sender === 'user') {
-            const imageUrl = URL.createObjectURL(imageFile);
+        
+        // Handle uploaded images
+        if (imageData && sender === 'user' && imageData.uploaded_image_data) {
+            const imageUrl = 'data:image/png;base64,' + imageData.uploaded_image_data;
             imageHtml = `<div class="message-image"><img src="${imageUrl}" class="image-preview" alt="Uploaded image"></div>`;
         }
+        
+     // Handle generated images in AI responses
+if (sender === 'ai' && imageData && imageData.has_generated_image && imageData.generated_image_data) {
+    try {
+        // Ensure the image data is properly formatted
+        const imageDataValue = imageData.generated_image_data;
+        if (imageDataValue && typeof imageDataValue === 'string') {
+            // Construct proper data URL
+            const generatedImageUrl = 'data:image/png;base64,' + imageDataValue;
+            imageHtml += `<div class="message-image"><img src="${generatedImageUrl}" class="image-preview" alt="Generated image" onerror="this.style.display='none'"></div>`;
+        }
+    } catch (error) {
+        console.error('Error displaying generated image:', error);
+    }
+}
         
         // Format AI responses for better readability
         let formattedContent = content;
         if (sender === 'ai') {
-            formattedContent = formatAIResponse(content);
+            formattedContent = formatAIResponse(content, imageData);
         }
         
         messageDiv.innerHTML = `
@@ -428,34 +567,73 @@ document.addEventListener('DOMContentLoaded', function() {
         if (welcomeMsg) {
             welcomeMsg.remove();
         }
-        
         chatContainer.appendChild(messageDiv);
         chatContainer.scrollTop = chatContainer.scrollHeight;
     }
 
-    function formatAIResponse(content) {
-        // Format mathematical steps and numbered lists
-        let formatted = content
-            // Format numbered steps (1., 2., etc.)
-            .replace(/^(\d+\.)\s*(.+)$/gm, '<div class="step-item"><span class="step-number">$1</span><span class="step-content">$2</span></div>')
-            // Format bullet points
-            .replace(/^[-*]\s*(.+)$/gm, '<div class="bullet-item"><i class="fas fa-circle bullet-icon"></i><span class="bullet-content">$1</span></div>')
-            // Format mathematical expressions in **bold**
-            .replace(/\*\*([^*]+)\*\*/g, '<strong class="math-expression">$1</strong>')
-            // Format headers with ##
-            .replace(/^##\s*(.+)$/gm, '<h6 class="response-header">$1</h6>')
-            // Format code or formulas in backticks
-            .replace(/`([^`]+)`/g, '<code class="formula">$1</code>')
-            // Add line breaks for paragraphs
-            .replace(/\n\n/g, '</div><div class="paragraph">')
-            // Format fractions
-            .replace(/(\d+)\/(\d+)/g, '<span class="fraction"><sup>$1</sup>&frasl;<sub>$2</sub></span>');
-        
-        // Wrap in paragraph div if no other formatting
-        if (!formatted.includes('<div class="step-item">') && !formatted.includes('<div class="bullet-item">')) {
+    function formatAIResponse(content, imageData) {
+        // Format the content with enhanced visual structure
+        let formatted = content;
+
+        // Add copy button to text responses
+        formatted = `<div style="position: relative;">${formatted}<button class="copy-button" onclick="copyToClipboard(this)">Copy</button></div>`;
+
+        // Format headers with ## (more visible)
+        formatted = formatted.replace(/^##\s*(.+)$/gm, '<h6 class="response-header">$1</h6>');
+
+        // Format bold text (**) for important terms
+        formatted = formatted.replace(/\*\*([^*]+)\*\*/g, '<strong class="highlight">$1</strong>');
+
+        // Format code blocks
+        formatted = formatted.replace(/```([\s\S]*?)```/g, '<div class="code-block">$1</div>');
+
+        // Format mathematical expressions in backticks
+        formatted = formatted.replace(/`([^`]+)`/g, '<code class="formula">$1</code>');
+
+        // Format fractions
+        formatted = formatted.replace(/(\d+)\/(\d+)/g, '<span class="fraction"><sup>$1</sup>&frasl;<sub>$2</sub></span>');
+
+        // Format numbered steps
+        formatted = formatted.replace(/^(\d+\.\s*)(.+)$/gm, '<div class="step-item"><span class="step-number">$1</span><span class="step-content">$2</span></div>');
+
+        // Format bullet points
+        formatted = formatted.replace(/^[-*]\s*(.+)$/gm, '<div class="bullet-item"><i class="fas fa-circle bullet-icon"></i><span class="bullet-content">$1</span></div>');
+
+        // Format concept explanations
+        formatted = formatted.replace(/CONCEPT:\s*(.*?)(?=\n|$)/gi, '<div class="concept-explanation"><strong>Concept:</strong> $1</div>');
+
+        // Format problem solving steps
+        formatted = formatted.replace(/PROBLEM:\s*(.*?)(?=\n|$)/gi, '<div class="problem-solving"><strong>Problem:</strong> $1</div>');
+
+        // Format examples
+        formatted = formatted.replace(/EXAMPLE:\s*(.*?)(?=\n|$)/gi, '<div class="example-box"><strong>Example:</strong> $1</div>');
+
+        // Format tips/notes
+        formatted = formatted.replace(/TIP:\s*(.*?)(?=\n|$)/gi, '<div class="tip-note"><strong>Tip:</strong> $1</div>');
+
+        // Format step-by-step guides
+        formatted = formatted.replace(/STEP-BY-STEP:\s*(.*?)(?=\n|$)/gi, '<div class="step-by-step-guide"><div class="step-by-step-title">Step-by-Step Guide</div><div class="step-by-step-content">$1</div></div>');
+
+        // Add paragraph breaks
+        formatted = formatted.replace(/\n\n/g, '</div><div class="paragraph">');
+        formatted = formatted.replace(/\n/g, '<br>');
+
+        // Wrap in paragraph if needed
+        if (!formatted.includes('<div class="paragraph">') && !formatted.includes('<div class="step-item">')) {
             formatted = `<div class="paragraph">${formatted}</div>`;
         }
-        
+
+        // Add download buttons for generated images
+        if (imageData && imageData.has_generated_image && imageData.generated_image_data) {
+            formatted += `
+                <div style="margin-top: 15px;">
+                    <button class="download-button" onclick="downloadGeneratedImage('${imageData.generated_image_data}')">
+                        <i class="fas fa-download me-1"></i>Download Generated Image
+                    </button>
+                </div>
+            `;
+        }
+
         return formatted;
     }
 
@@ -478,6 +656,53 @@ document.addEventListener('DOMContentLoaded', function() {
     window.clearImagePreview = function() {
         imagePreviewContainer.innerHTML = '';
         imageInput.value = '';
+    };
+
+    window.copyToClipboard = function(button) {
+        // Get the text content of the parent div
+        const parentDiv = button.parentElement;
+        const text = parentDiv.innerText || parentDiv.textContent;
+        
+        // Remove the copy button text from the copied content
+        const cleanText = text.replace('Copy', '').trim();
+        
+        // Try to copy to clipboard
+        navigator.clipboard.writeText(cleanText).then(() => {
+            // Change button text temporarily
+            const originalText = button.textContent;
+            button.textContent = 'Copied!';
+            setTimeout(() => {
+                button.textContent = originalText;
+            }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+            // Fallback for older browsers
+            const textarea = document.createElement('textarea');
+            textarea.value = cleanText;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            } catch (err) {
+                console.error('Fallback: Oops, unable to copy', err);
+            }
+            document.body.removeChild(textarea);
+        });
+    };
+
+    window.downloadGeneratedImage = function(imageData) {
+        // Create a temporary link element
+        const link = document.createElement('a');
+        link.href = 'data:image/png;base64,' + imageData;
+        link.download = 'generated_image.png';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     };
 });
 </script>

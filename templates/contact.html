@@ -1,7 +1,5 @@
 {% extends "base.html" %}
-
 {% block title %}Contact Us - Gachororo Secondary School{% endblock %}
-
 {% block content %}
 <!-- Page Header -->
 <section class="page-header bg-primary text-white py-5">
@@ -14,7 +12,6 @@
         </div>
     </div>
 </section>
-
 <!-- Contact Information -->
 <section class="py-5">
     <div class="container">
@@ -30,13 +27,12 @@
                                     {% if content and content.contact_address %}
                                         {{ content.contact_address }}
                                     {% else %}
-                                        Gachororo, Kenya
+                                       Juja, Gachororo,Kiambu County, Kenya
                                     {% endif %}
                                 </p>
                             </div>
                         </div>
                     </div>
-                    
                     <div class="col-md-4 mb-4">
                         <div class="card contact-info-card h-100 text-center">
                             <div class="card-body">
@@ -46,17 +42,16 @@
                                     {% if content and content.contact_phone %}
                                         {{ content.contact_phone }}
                                     {% else %}
-                                        +254 700 000 000
+                                        +254715802318
                                     {% endif %}
                                 </p>
-                                <a href="tel:{% if content and content.contact_phone %}{{ content.contact_phone }}{% else %}+254700000000{% endif %}" 
+                                <a href="tel:{% if content and content.contact_phone %}{{ content.contact_phone }}{% else %}+254715802318{% endif %}" 
                                    class="btn btn-sm btn-success">
                                     <i class="fas fa-phone me-1"></i>Call Now
                                 </a>
                             </div>
                         </div>
                     </div>
-                    
                     <div class="col-md-4 mb-4">
                         <div class="card contact-info-card h-100 text-center">
                             <div class="card-body">
@@ -66,7 +61,7 @@
                                     {% if content and content.contact_email %}
                                         {{ content.contact_email }}
                                     {% else %}
-                                        info@gachororo.ac.ke
+                                        Ggachororossc@gmail.com
                                     {% endif %}
                                 </p>
                                 <a href="mailto:{% if content and content.contact_email %}{{ content.contact_email }}{% else %}info@gachororo.ac.ke{% endif %}" 
@@ -81,7 +76,6 @@
         </div>
     </div>
 </section>
-
 <!-- Contact Form -->
 <section class="py-5 bg-light">
     <div class="container">
@@ -90,6 +84,18 @@
                 <div class="card shadow">
                     <div class="card-body p-5">
                         <h3 class="text-center mb-4">Send Us a Message</h3>
+                        <!-- Flash messages -->
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                {% for category, message in messages %}
+                                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                        {{ message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+                        
                         <form method="POST">
                             <div class="row">
                                 <div class="col-md-6 mb-3">
@@ -101,7 +107,6 @@
                                     <input type="email" class="form-control" id="email" name="email" required>
                                 </div>
                             </div>
-                            
                             <div class="mb-3">
                                 <label for="subject" class="form-label">Subject</label>
                                 <select class="form-select" id="subject" name="subject">
@@ -114,13 +119,11 @@
                                     <option value="other">Other</option>
                                 </select>
                             </div>
-                            
                             <div class="mb-4">
                                 <label for="message" class="form-label">Message *</label>
                                 <textarea class="form-control" id="message" name="message" rows="5" 
                                          placeholder="Please type your message here..." required></textarea>
                             </div>
-                            
                             <div class="text-center">
                                 <button type="submit" class="btn btn-primary btn-lg">
                                     <i class="fas fa-paper-plane me-2"></i>Send Message
@@ -133,7 +136,6 @@
         </div>
     </div>
 </section>
-
 <!-- Quick Contact Options -->
 <section class="py-5">
     <div class="container">
@@ -143,7 +145,6 @@
                 <p class="lead text-muted">Choose the most convenient way to reach us</p>
             </div>
         </div>
-        
         <div class="row justify-content-center">
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="card quick-contact-card h-100">
@@ -153,14 +154,13 @@
                         </div>
                         <h5 class="card-title">WhatsApp</h5>
                         <p class="card-text">Send us a message on WhatsApp for quick responses</p>
-                        <a href="https://wa.me/{% if content and content.contact_phone %}{{ content.contact_phone.replace('+', '').replace(' ', '') }}{% else %}254700000000{% endif %}?text=Hello%20Gachororo%20Secondary%20School" 
+                        <a href="https://wa.me/{% if content and content.contact_phone %}{{ content.contact_phone.replace('+', '').replace(' ', '') }}{% else %}254715802318{% endif %}?text=Hello%20Gachororo%20Secondary%20School" 
                            class="btn btn-success" target="_blank">
                             <i class="fab fa-whatsapp me-2"></i>Chat on WhatsApp
                         </a>
                     </div>
                 </div>
             </div>
-            
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="card quick-contact-card h-100">
                     <div class="card-body text-center">
@@ -171,12 +171,11 @@
                         <p class="card-text">Visit us during our office hours</p>
                         <div class="office-hours">
                             <p class="mb-1"><strong>Monday - Friday:</strong> 7:30 AM - 4:30 PM</p>
-                            <p class="mb-0"><strong>Saturday:</strong> 8:00 AM - 12:00 PM</p>
+            
                         </div>
                     </div>
                 </div>
             </div>
-            
             <div class="col-md-6 col-lg-4 mb-4">
                 <div class="card quick-contact-card h-100">
                     <div class="card-body text-center">
@@ -184,8 +183,8 @@
                             <i class="fas fa-calendar-check fa-3x text-warning"></i>
                         </div>
                         <h5 class="card-title">Schedule a Visit</h5>
-                        <p class="card-text">Plan a visit to our school campus</p>
-                        <a href="tel:{% if content and content.contact_phone %}{{ content.contact_phone }}{% else %}+254700000000{% endif %}" 
+                        <p class="card-text">Plan a visit to our school </p>
+                        <a href="tel:{% if content and content.contact_phone %}{{ content.contact_phone }}{% else %}+254715802318{% endif %}" 
                            class="btn btn-warning">
                             <i class="fas fa-phone me-2"></i>Call to Schedule
                         </a>
@@ -195,17 +194,15 @@
         </div>
     </div>
 </section>
-
 <!-- Map Section -->
 <section class="py-5 bg-light">
     <div class="container">
         <div class="row">
             <div class="col-12 text-center mb-5">
-                <h2>Find Us</h2>
+                <h2 class="p">Find Us</h2>
                 <p class="lead text-muted">Located in the heart of Gachororo</p>
             </div>
         </div>
-        
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -219,10 +216,10 @@
                                         {% if content and content.contact_address %}
                                             {{ content.contact_address }}
                                         {% else %}
-                                            Gachororo, Kenya
+                                           Juja, Gachororo,Kiambu County, Kenya
                                         {% endif %}
-                                    </p>
-                                    <p class="text-muted">Interactive map will be available soon</p>
+                                    
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.09949189192!2d37.0228141!3d-1.0876276!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f48a1584663e3%3A0x534f9074e16106ef!2sGachororo%20Secondary%20School!5e0!3m2!1sen!2ske!4v1754341818051!5m2!1sen!2ske" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                                 </div>
                             </div>
                         </div>
@@ -232,7 +229,6 @@
         </div>
     </div>
 </section>
-
 <!-- FAQ Section -->
 <section class="py-5">
     <div class="container">
@@ -242,7 +238,6 @@
                 <p class="lead text-muted">Quick answers to common questions</p>
             </div>
         </div>
-        
         <div class="row">
             <div class="col-lg-8 mx-auto">
                 <div class="accordion" id="faqAccordion">
@@ -261,7 +256,6 @@
                             </div>
                         </div>
                     </div>
-                    
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="faq2">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
@@ -278,7 +272,6 @@
                             </div>
                         </div>
                     </div>
-                    
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="faq3">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
@@ -289,12 +282,9 @@
                         <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="faq3" 
                              data-bs-parent="#faqAccordion">
                             <div class="accordion-body">
-                                Please contact us directly for information about our accommodation facilities and 
-                                boarding options available for students.
-                            </div>
+                                No its a Day School                            </div>
                         </div>
                     </div>
-                    
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="faq4">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
@@ -316,7 +306,6 @@
     </div>
 </section>
 {% endblock %}
-
 {% block head %}
 <style>
 .contact-info-card {
@@ -324,53 +313,47 @@
     border: none;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
-
 .contact-info-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 25px rgba(0,0,0,0.15);
 }
-
 .quick-contact-card {
     transition: transform 0.3s ease;
     border: none;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
-
 .quick-contact-card:hover {
     transform: translateY(-5px);
 }
-
 .quick-contact-icon i {
     transition: transform 0.3s ease;
 }
-
 .quick-contact-card:hover .quick-contact-icon i {
     transform: scale(1.1);
 }
-
 .map-container {
     height: 300px;
     background-color: #f8f9fa;
     border-radius: 8px;
 }
-
 .map-placeholder {
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-
 .office-hours {
     background-color: #f8f9fa;
     padding: 15px;
     border-radius: 8px;
     margin-top: 15px;
 }
-
 .accordion-button:not(.collapsed) {
     background-color: #e7f3ff;
     color: #0d6efd;
+}
+.p{
+    color: red;
 }
 </style>
 {% endblock %}
